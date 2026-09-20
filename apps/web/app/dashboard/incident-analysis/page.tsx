@@ -151,8 +151,8 @@ export default function IncidentAnalysisPage() {
             disabled={running}
             className="rounded-md px-5 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed"
             style={{
-              background: running ? "var(--color-inset)" : "var(--color-ink)",
-              color: running ? "var(--color-ink-muted)" : "#000",
+              background: running ? "var(--color-inset)" : "var(--color-clay-deep)",
+              color: running ? "var(--color-ink-muted)" : "#fffefa",
             }}
           >
             {running ? "Investigating…" : resolved ? "Investigate again" : "Investigate incident"}

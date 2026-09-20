@@ -1,11 +1,6 @@
 @import "tailwindcss";
 
-/*
- * A dark-only console. The two series colours are the validated categorical
- * blue and red stepped for a dark surface; chrome and ink follow the same
- * reference palette. Status colours are reserved for state and never reused
- * as a series colour.
- */
+/* Shared palette, with scoped surface tokens for light and dark views. */
 @theme {
   /*
    * Two surfaces, deliberately. The marketing page is a warm ivory canvas with
@@ -87,6 +82,37 @@ body {
   background: var(--color-plane);
   color: var(--color-ink);
   min-height: 100vh;
+}
+
+/* Warm paper, charcoal type and clay accents for the dashboard. */
+.surface-light {
+  --color-plane: #faf9f5;
+  --color-surface: #fffefa;
+  --color-inset: #eeece5;
+  --color-ink: #292720;
+  --color-ink-secondary: #555249;
+  --color-ink-muted: #6e695f;
+  --color-hairline: #dedad0;
+  --color-gridline: #e7e3da;
+  --color-baseline: #c4beb1;
+  --color-tab-active: #f5e2d7;
+  --color-series-memory: #2864a8;
+  --color-series-errors: #b43f3f;
+  --color-series-blocked: #18786e;
+  --color-status-good: #367044;
+  --color-status-warning: #91620d;
+  --color-status-serious: #ab512f;
+  --color-status-critical: #b43f3f;
+  color-scheme: light;
+  background: var(--color-plane);
+  color: var(--color-ink);
+  min-height: 100vh;
+}
+
+.surface-light h1,
+.surface-light h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
 }
 
 .display {
