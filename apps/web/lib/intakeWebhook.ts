@@ -14,7 +14,7 @@ import { createHmac } from "node:crypto";
  * process.env at call time, and it is only ever valid on the server.
  */
 
-export const API_URL = process.env.INCIDENT_API_URL ?? "http://localhost:4000";
+export const API_URL = process.env.INCIDENT_API_URL || process.env.API_INTERNAL_URL || "http://localhost:4000";
 
 /** Signs exactly the bytes it sends: HMAC-SHA256 over `<unix seconds>.<body>`. */
 export async function postSignedWebhook(

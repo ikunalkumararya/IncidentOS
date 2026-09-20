@@ -1,0 +1,18 @@
+{$APP_DOMAIN} {
+  encode gzip
+  route {
+    # These two endpoints belong to Next.js, not Express.
+    @website_api path /api/report /api/report/* /api/logs /api/logs/*
+    handle @website_api {
+      reverse_proxy web:3000
+    }
+    handle /api/* {
+      reverse_proxy api:4000 {
+        flush_interval -1
+      }
+    }
+    handle {
+      reverse_proxy web:3000
+    }
+  }
+}

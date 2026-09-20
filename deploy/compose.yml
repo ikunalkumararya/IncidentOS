@@ -1,0 +1,51 @@
+name: incidentos
+services:
+  api:
+    image: ${ECR_REGISTRY}/incidentos-api:${IMAGE_TAG}
+    restart: unless-stopped
+    init: true
+    env_file: ./api.env
+    environment:
+      NODE_ENV: production
+      PORT: "4000"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+  web:
+    image: ${ECR_REGISTRY}/incidentos-web:${IMAGE_TAG}
+    restart: unless-stopped
+    init: true
+    env_file: ./web.env
+    environment:
+      NODE_ENV: production
+      API_INTERNAL_URL: http://api:4000
+      INCIDENT_API_URL: http://api:4000
+    depends_on:
+      - api
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+  proxy:
+    image: caddy:2
+    restart: unless-stopped
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+      - api
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  caddy_data:
+  caddy_config:

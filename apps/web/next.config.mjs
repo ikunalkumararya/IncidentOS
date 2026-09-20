@@ -24,8 +24,16 @@ const nextConfig = {
    * NEXT_DIST_DIR sends such a build somewhere harmless.
    */
   distDir: process.env.NEXT_DIST_DIR ?? ".next",
+  async rewrites() {
+    const backend = (process.env.API_INTERNAL_URL || (process.env.NODE_ENV !== "production" ? "http://localhost:4000" : "" )).replace(/\/$/, "");
+    return {
+      fallback: backend
+        ? [{ source: "/api/:path*", destination: `${backend}/api/:path*` }]
+        : [],
+    };
+  },
   env: {
-    NEXT_PUBLIC_API_BASE: process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:4000",
+    NEXT_PUBLIC_API_BASE: process.env.VERCEL ? "" : (process.env.NEXT_PUBLIC_API_BASE ?? ""),
     // Mirrored from the server's DEMO_USER_* so the sign-in page's one-click
     // demo button stays in step with the account that is actually seeded.
     NEXT_PUBLIC_DEMO_EMAIL: process.env.DEMO_USER_EMAIL ?? "demo@incidentos.dev",

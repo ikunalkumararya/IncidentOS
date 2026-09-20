@@ -48,7 +48,7 @@ async function post<T>(path: string, body?: unknown): Promise<T> {
       body: body === undefined ? undefined : JSON.stringify(body),
     });
   } catch {
-    throw new AuthError("Can’t reach the server. Is it running on " + API_BASE + "?");
+    throw new AuthError("Can’t reach the API server. Please try again or check the backend deployment.");
   }
 
   if (res.status === 204) return undefined as T;
