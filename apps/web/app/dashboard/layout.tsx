@@ -51,7 +51,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (checking) {
     return (
-      <div className="surface-dark">
+      <div className="surface-light">
         <main className="mx-auto flex min-h-screen max-w-6xl items-center justify-center px-6">
           <p className="text-sm text-[var(--color-ink-muted)]">Checking your session…</p>
         </main>
@@ -60,11 +60,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="surface-dark min-h-screen">
+    <div className="surface-light min-h-screen">
       <div className="mx-auto max-w-6xl px-6 py-7">
         <header className="mb-5 flex items-center justify-between">
           <div className="flex items-baseline gap-3">
-            <Link href="/" className="text-lg font-semibold tracking-tight transition hover:opacity-70">
+            <Link href="/" className="font-serif text-2xl tracking-tight transition hover:opacity-70">
               IncidentOS
             </Link>
             <span className="text-xs text-[var(--color-ink-muted)]">Investigate. Fix. Verify.</span>
@@ -81,7 +81,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         </header>
 
-        <nav className="mb-6 flex gap-1 border-b border-[var(--color-ink-muted)]/20" aria-label="Dashboard sections">
+        <nav className="mb-6 grid grid-cols-2 gap-1 rounded-xl border border-[var(--color-hairline)] bg-[var(--color-inset)] p-1" aria-label="Dashboard sections">
           {TABS.map((tab) => {
             const active = pathname === tab.href;
             return (
@@ -89,10 +89,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 key={tab.href}
                 href={tab.href}
                 aria-current={active ? "page" : undefined}
-                className={`-mb-px border-b-2 px-4 py-2.5 text-[13.5px] font-medium transition ${
+                className={`rounded-lg border px-4 py-3 text-center text-[13.5px] font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-clay-deep)] ${
                   active
-                    ? "border-[var(--color-ink)] text-[var(--color-ink)]"
-                    : "border-transparent text-[var(--color-ink-muted)] hover:text-[var(--color-ink)]"
+                    ? "border-[var(--color-clay)]/40 bg-[var(--color-tab-active)] text-[var(--color-clay-deep)] shadow-sm"
+                    : "border-transparent text-[var(--color-ink-muted)] hover:bg-[var(--color-surface)] hover:text-[var(--color-ink)]"
                 }`}
               >
                 {tab.label}
