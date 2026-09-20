@@ -36,3 +36,12 @@ export const FORCE_DEMO_MODE = process.env.DEMO_MODE === "1";
 
 /** Hard cap on agent turns per phase, so a confused model cannot loop forever. */
 export const MAX_ITERATIONS_PER_PHASE = 14;
+
+export const DATABASE_URL =
+  process.env.DATABASE_URL || "postgres://incidentos:incidentos@localhost:5432/incidentos";
+
+/**
+ * Persistence is an enhancement, not a dependency: the demo runs and streams
+ * identically with the database down. Set to 0 to skip connecting entirely.
+ */
+export const PERSISTENCE_ENABLED = process.env.PERSIST !== "0";
