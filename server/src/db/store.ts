@@ -1,4 +1,4 @@
-import type { TimedEvent } from "../events.js";
+import type { RunKind, TimedEvent } from "../events.js";
 import { getPool } from "./pool.js";
 
 /**
@@ -37,13 +37,13 @@ export class RunWriter {
     });
   }
 
-  begin(mode: "live" | "demo", incidentId: string | null): void {
+  begin(mode: "live" | "demo", incidentId: string | null, kind: RunKind): void {
     this.enqueue(async (query) => {
       await query(
-        `INSERT INTO runs (id, mode, status, incident_id)
-         VALUES ($1, $2, 'running', $3)
+        `INSERT INTO runs (id, mode, status, incident_id, kind)
+         VALUES ($1, $2, 'running', $3, $4)
          ON CONFLICT (id) DO NOTHING`,
-        [this.runId, mode, incidentId],
+        [this.runId, mode, incidentId, kind],
       );
     });
   }
@@ -216,6 +216,7 @@ type QueryFn = (text: string, values?: unknown[]) => Promise<unknown>;
 
 export interface RunSummary {
   id: string;
+  kind: string;
   mode: string;
   status: string;
   incidentId: string | null;
@@ -233,7 +234,7 @@ export async function listRuns(limit = 20): Promise<RunSummary[]> {
   if (!pool) return [];
 
   const { rows } = await pool.query(
-    `SELECT r.id, r.mode, r.status, r.incident_id, r.started_at, r.finished_at, r.duration_ms,
+    `SELECT r.id, r.kind, r.mode, r.status, r.incident_id, r.started_at, r.finished_at, r.duration_ms,
             rc.explanation AS root_cause,
             t.passed       AS tests_passed,
             t.total        AS tests_total
@@ -247,6 +248,7 @@ export async function listRuns(limit = 20): Promise<RunSummary[]> {
 
   return rows.map((row) => ({
     id: row.id,
+    kind: row.kind,
     mode: row.mode,
     status: row.status,
     incidentId: row.incident_id,

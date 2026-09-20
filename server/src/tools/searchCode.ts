@@ -1,7 +1,6 @@
 import { readdir, readFile } from "node:fs/promises";
 import { join, relative } from "node:path";
 import { z } from "zod";
-import { SANDBOX_REPO } from "../config.js";
 import { resolveInSandbox } from "../sandbox.js";
 import { defineTool } from "./types.js";
 
@@ -32,8 +31,8 @@ export const searchCode = defineTool({
     "Search the payments-api source tree for a pattern. Returns `path:line: text` for each match. " +
     "The repository root contains src/, tests/ and scripts/.",
   schema,
-  async run(input) {
-    const root = input.path ? resolveInSandbox(input.path) : SANDBOX_REPO;
+  async run(input, ctx) {
+    const root = input.path ? resolveInSandbox(input.path, ctx.sandboxRoot) : ctx.sandboxRoot;
     const files = await walk(root);
 
     let test: (line: string) => boolean;
@@ -48,7 +47,7 @@ export const searchCode = defineTool({
     const matches: string[] = [];
     for (const file of files) {
       const text = await readFile(file, "utf8");
-      const rel = relative(SANDBOX_REPO, file);
+      const rel = relative(ctx.sandboxRoot, file);
       text.split("\n").forEach((line, index) => {
         if (matches.length < input.limit && test(line)) {
           matches.push(`${rel}:${index + 1}: ${line.trim()}`);
@@ -59,7 +58,7 @@ export const searchCode = defineTool({
     return {
       content: matches.length
         ? `${matches.length} match(es) for /${input.query}/i\n\n${matches.join("\n")}`
-        : `no matches for /${input.query}/i under ${relative(SANDBOX_REPO, root) || "."}`,
+        : `no matches for /${input.query}/i under ${relative(ctx.sandboxRoot, root) || "."}`,
       summary: `${matches.length} code match(es) for "${input.query}"`,
     };
   },

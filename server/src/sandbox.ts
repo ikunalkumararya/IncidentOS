@@ -1,35 +1,53 @@
 import { execFile } from "node:child_process";
 import { cp, mkdir, readFile, rm } from "node:fs/promises";
-import { isAbsolute, join, relative, resolve, sep } from "node:path";
+import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { promisify } from "node:util";
-import { DEMO_REPO, REPO_ROOT, SANDBOX_REPO, SANDBOX_ROOT } from "./config.js";
+import { DEMO_REPO, REPO_ROOT, sandboxRepoFor } from "./config.js";
+import type { RunKind } from "./events.js";
 
 const run = promisify(execFile);
 
 /**
- * Resets the agent's working copy to a pristine checkout of the demo
- * repository. Called at the start of every investigation so a run never
- * inherits the previous run's patch.
+ * Both subjects' red regression tests live in the demo repository at all
+ * times (there is only one generated copy of payments-api). A run's sandbox
+ * must carry only its own subject's regression test, or the other subject's
+ * still-failing test would block this run's green gate.
  */
-export async function prepareSandbox(): Promise<void> {
-  await rm(SANDBOX_ROOT, { recursive: true, force: true });
-  await mkdir(SANDBOX_ROOT, { recursive: true });
-  await cp(DEMO_REPO, SANDBOX_REPO, { recursive: true });
+const RED_TESTS_TO_STRIP: Record<RunKind, string[]> = {
+  incident: ["tests/auth-lockout.test.ts"],
+  attack: ["tests/memory-regression.test.ts"],
+};
+
+/**
+ * Resets the agent's working copy for one run kind to a pristine checkout of
+ * the demo repository. Called at the start of every investigation so a run
+ * never inherits a previous run's patch. Only that kind's directory is
+ * touched, so a concurrent incident run and attack run never clobber each
+ * other.
+ */
+export async function prepareSandbox(kind: RunKind): Promise<void> {
+  const root = sandboxRepoFor(kind);
+  await rm(root, { recursive: true, force: true });
+  await mkdir(dirname(root), { recursive: true });
+  await cp(DEMO_REPO, root, { recursive: true });
+  await Promise.all(
+    RED_TESTS_TO_STRIP[kind].map((file) => rm(join(root, file), { force: true })),
+  );
 }
 
 /**
- * Resolves a model-supplied path inside the sandbox, rejecting anything that
- * escapes it.
+ * Resolves a model-supplied path inside the given sandbox root, rejecting
+ * anything that escapes it.
  *
  * The path is untrusted model output, so `..` segments and absolute paths have
  * to be rejected after resolution, not by inspecting the string. Paths are
  * also accepted with a leading `payments-api/` or `src/...` so the model does
  * not have to guess the sandbox layout.
  */
-export function resolveInSandbox(candidate: string): string {
+export function resolveInSandbox(candidate: string, root: string): string {
   const cleaned = candidate.replace(/^\.?\//, "").replace(/^payments-api\//, "");
-  const target = resolve(SANDBOX_REPO, cleaned);
-  const rel = relative(SANDBOX_REPO, target);
+  const target = resolve(root, cleaned);
+  const rel = relative(root, target);
 
   if (rel === ".." || rel.startsWith(".." + sep) || isAbsolute(rel)) {
     throw new Error(
@@ -84,14 +102,14 @@ export interface TestReport {
   raw: string;
 }
 
-/** Runs the demo repository's vitest suite. Takes no caller-supplied input. */
-export async function runTests(): Promise<TestReport> {
-  const reportPath = join(SANDBOX_ROOT, "vitest-report.json");
+/** Runs the demo repository's vitest suite against the given sandbox root. */
+export async function runTests(root: string): Promise<TestReport> {
+  const reportPath = join(dirname(root), "vitest-report.json");
   await rm(reportPath, { force: true });
 
   const result = await runFixed(
     bin("vitest"),
-    ["run", "--root", SANDBOX_REPO, "--reporter=json", `--outputFile=${reportPath}`],
+    ["run", "--root", root, "--reporter=json", `--outputFile=${reportPath}`],
     REPO_ROOT,
   );
 
@@ -129,9 +147,9 @@ export async function runTests(): Promise<TestReport> {
   };
 }
 
-/** Type-checks the sandbox. */
-export async function typecheck(): Promise<CommandResult> {
-  return runFixed(bin("tsc"), ["--noEmit", "-p", join(SANDBOX_REPO, "tsconfig.json")], REPO_ROOT);
+/** Type-checks the sandbox at the given root. */
+export async function typecheck(root: string): Promise<CommandResult> {
+  return runFixed(bin("tsc"), ["--noEmit", "-p", join(root, "tsconfig.json")], REPO_ROOT);
 }
 
 export interface MemoryMeasurement {
@@ -143,14 +161,14 @@ export interface MemoryMeasurement {
 
 /**
  * Runs the demo repository's memory simulation against whatever is currently
- * in the sandbox. These are real measurements of real code, taken once before
- * the patch and once after.
+ * in the sandbox at `root`. These are real measurements of real code, taken
+ * once before the patch and once after.
  */
-export async function measureMemory(): Promise<MemoryMeasurement> {
+export async function measureMemory(root: string): Promise<MemoryMeasurement> {
   const result = await runFixed(
     process.execPath,
     ["--expose-gc", "--import", "tsx", join("scripts", "memory-sim.ts")],
-    SANDBOX_REPO,
+    root,
   );
 
   const line = result.stdout.trim().split("\n").filter(Boolean).at(-1);
@@ -158,4 +176,33 @@ export async function measureMemory(): Promise<MemoryMeasurement> {
     throw new Error(`memory simulation produced no output: ${result.stderr.slice(-500)}`);
   }
   return JSON.parse(line) as MemoryMeasurement;
+}
+
+export interface AttackSimResult {
+  attempts: number;
+  sources: number;
+  rateLimited: number;
+  attemptsReachingVerifier: number;
+  credentialsMatched: number;
+  sessionsCreated: number;
+  lockedAccounts: number;
+}
+
+/**
+ * Runs the demo repository's attack simulation (mirrors measureMemory): it
+ * replays the campaign's fixture source distribution against whatever is
+ * currently in the sandbox at `root`, once before the patch and once after.
+ */
+export async function measureAttack(root: string): Promise<AttackSimResult> {
+  const result = await runFixed(
+    process.execPath,
+    ["--import", "tsx", join("scripts", "attack-sim.ts")],
+    root,
+  );
+
+  const line = result.stdout.trim().split("\n").filter(Boolean).at(-1);
+  if (!line) {
+    throw new Error(`attack simulation produced no output: ${result.stderr.slice(-500)}`);
+  }
+  return JSON.parse(line) as AttackSimResult;
 }

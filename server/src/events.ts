@@ -6,8 +6,17 @@
  * so the structured findings arrive as typed events while the model is still
  * working, instead of having to be recovered from its final text.
  */
+import type { AttackSimResult } from "./sandbox.js";
+
+/** Which kind of investigation a run is — each has its own tool set, prompts and sandbox. */
+export type RunKind = "incident" | "attack";
+
+// Re-exported so consumers (including the web app) can import it from events.ts
+// alongside the rest of the wire contract instead of reaching into sandbox.ts.
+export type { AttackSimResult } from "./sandbox.js";
+
 export type InvestigationEvent =
-  | { type: "started"; incidentId: string; message: string }
+  | { type: "started"; incidentId: string; message: string; kind?: RunKind }
   | { type: "phase"; phase: Phase; label: string }
   | { type: "thinking"; text: string }
   | { type: "tool_call"; tool: string; input: unknown }
@@ -19,6 +28,9 @@ export type InvestigationEvent =
   | { type: "verification"; check: string; ok: boolean; detail: string }
   | { type: "test"; passed: number; failed: number; total: number; failures: string[] }
   | { type: "memory"; beforeMB: number; afterMB: number; beforePerTxn: number; afterPerTxn: number; reductionPercent: number }
+  | { type: "attack_assessment"; priority: "Minor" | "Major" | "Urgent"; confidence: number; rationale: string }
+  | { type: "code_location"; path: string; line: number; symbol: string; explanation: string }
+  | { type: "attack_sim"; before: AttackSimResult; after: AttackSimResult }
   | { type: "report"; markdown: string }
   | { type: "narration"; text: string }
   | { type: "error"; message: string; fatal: boolean }
@@ -34,6 +46,16 @@ export const PHASE_LABELS: Record<Phase, string> = {
   fix: "Locating and patching the defect",
   verify: "Verifying the fix",
   report: "Writing the incident report",
+};
+
+/** Same phases, worded for the attack investigation. */
+export const ATTACK_PHASE_LABELS: Record<Phase, string> = {
+  investigate: "Gathering campaign telemetry",
+  hypothesize: "Forming hypotheses",
+  prove: "Testing hypotheses",
+  fix: "Hardening the endpoint",
+  verify: "Verifying the fix",
+  report: "Writing the security report",
 };
 
 /** An event as it goes over the wire: `at` is ms since the run started. */

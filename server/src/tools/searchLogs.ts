@@ -4,14 +4,14 @@ import { z } from "zod";
 import { DEMO_DATA } from "../config.js";
 import { defineTool, ToolError } from "./types.js";
 
-const LOG_FILES: Record<string, string> = {
+export const LOG_FILES: Record<string, string> = {
   "payments-api": join(DEMO_DATA, "logs", "payments-api.log"),
   "payments-api-errors": join(DEMO_DATA, "logs", "payments-errors.log"),
 };
 
 /** Files are small and immutable; read once and keep them. */
 const cache = new Map<string, string[]>();
-function lines(file: string): string[] {
+export function lines(file: string): string[] {
   let cached = cache.get(file);
   if (!cached) {
     cached = readFileSync(file, "utf8").split("\n").filter(Boolean);

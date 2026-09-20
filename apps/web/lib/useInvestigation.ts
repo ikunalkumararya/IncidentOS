@@ -1,9 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { Phase, TimedEvent } from "./types";
+import type { AttackSimResult, Phase, TimedEvent } from "./types";
 
 export const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:4000";
+
+export type InvestigationKind = "incident" | "attack";
 
 export interface HypothesisState {
   id: string;
@@ -25,10 +27,13 @@ export interface ActivityItem {
 }
 
 export interface InvestigationState {
+  kind: InvestigationKind;
   status: "idle" | "running" | "resolved" | "failed";
   demoMode: string | null;
   phase: Phase | null;
   phaseLabel: string;
+  /** Tool calls resolved since the current phase started; drives playback reveal. */
+  phaseToolCount: number;
   activity: ActivityItem[];
   hypotheses: HypothesisState[];
   rootCause: { explanation: string; confidence: number; hypothesisId: string } | null;
@@ -42,27 +47,37 @@ export interface InvestigationState {
     afterPerTxn: number;
     reductionPercent: number;
   } | null;
+  assessment: { priority: "Minor" | "Major" | "Urgent"; confidence: number; rationale: string } | null;
+  codeLocation: { path: string; line: number; symbol: string; explanation: string } | null;
+  attackSim: { before: AttackSimResult; after: AttackSimResult } | null;
   report: string | null;
   error: string | null;
   durationMs: number;
 }
 
-const initialState: InvestigationState = {
-  status: "idle",
-  demoMode: null,
-  phase: null,
-  phaseLabel: "",
-  activity: [],
-  hypotheses: [],
-  rootCause: null,
-  patches: [],
-  verifications: [],
-  tests: null,
-  memory: null,
-  report: null,
-  error: null,
-  durationMs: 0,
-};
+function makeInitialState(kind: InvestigationKind): InvestigationState {
+  return {
+    kind,
+    status: "idle",
+    demoMode: null,
+    phase: null,
+    phaseLabel: "",
+    phaseToolCount: 0,
+    activity: [],
+    hypotheses: [],
+    rootCause: null,
+    patches: [],
+    verifications: [],
+    tests: null,
+    memory: null,
+    assessment: null,
+    codeLocation: null,
+    attackSim: null,
+    report: null,
+    error: null,
+    durationMs: 0,
+  };
+}
 
 function summariseInput(input: unknown): string {
   if (!input || typeof input !== "object") return "";
@@ -88,10 +103,12 @@ function reduce(state: InvestigationState, event: TimedEvent): InvestigationStat
     case "demo_mode":
       // The recording replays from the beginning rather than resuming, so the
       // timeline has to be cleared or the two runs would interleave.
-      return { ...initialState, status: "running", demoMode: event.reason };
+      return { ...makeInitialState(state.kind), status: "running", demoMode: event.reason };
 
     case "phase":
-      return { ...state, phase: event.phase, phaseLabel: event.label };
+      // Reset per-phase so playback reveal (lib/playback.ts) restarts counting
+      // from the new phase's base.
+      return { ...state, phase: event.phase, phaseLabel: event.label, phaseToolCount: 0 };
 
     case "tool_call":
       return {
@@ -118,7 +135,7 @@ function reduce(state: InvestigationState, event: TimedEvent): InvestigationStat
           break;
         }
       }
-      return { ...state, activity };
+      return { ...state, activity, phaseToolCount: state.phaseToolCount + 1 };
     }
 
     case "thinking":
@@ -224,6 +241,26 @@ function reduce(state: InvestigationState, event: TimedEvent): InvestigationStat
         },
       };
 
+    case "attack_assessment":
+      return {
+        ...state,
+        assessment: { priority: event.priority, confidence: event.confidence, rationale: event.rationale },
+      };
+
+    case "code_location":
+      return {
+        ...state,
+        codeLocation: {
+          path: event.path,
+          line: event.line,
+          symbol: event.symbol,
+          explanation: event.explanation,
+        },
+      };
+
+    case "attack_sim":
+      return { ...state, attackSim: { before: event.before, after: event.after } };
+
     case "report":
       return { ...state, report: event.markdown };
 
@@ -239,15 +276,15 @@ function reduce(state: InvestigationState, event: TimedEvent): InvestigationStat
       };
 
     case "resolved":
-      return { ...state, status: "resolved", phase: null, durationMs: event.at };
+      return { ...state, status: "resolved", phase: null, durationMs: event.durationMs };
 
     default:
       return state;
   }
 }
 
-export function useInvestigation() {
-  const [state, setState] = useState<InvestigationState>(initialState);
+export function useInvestigation(kind: InvestigationKind = "incident") {
+  const [state, setState] = useState<InvestigationState>(() => makeInitialState(kind));
   const sourceRef = useRef<EventSource | null>(null);
 
   const stop = useCallback(() => {
@@ -259,11 +296,13 @@ export function useInvestigation() {
 
   const start = useCallback(async () => {
     stop();
-    setState({ ...initialState, status: "running" });
+    setState({ ...makeInitialState(kind), status: "running" });
+
+    const path = kind === "attack" ? "/api/attack-investigations" : "/api/investigations";
 
     let runId: string;
     try {
-      const response = await fetch(`${API_BASE}/api/investigations`, {
+      const response = await fetch(`${API_BASE}${path}`, {
         method: "POST",
         // Carries the session cookie; the endpoint is authenticated.
         credentials: "include",
@@ -303,7 +342,7 @@ export function useInvestigation() {
         );
       }
     };
-  }, [stop]);
+  }, [stop, kind]);
 
   return { state, start };
 }

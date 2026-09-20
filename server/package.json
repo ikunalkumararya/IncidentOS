@@ -9,6 +9,7 @@
     "db:check": "tsx src/db/check.ts",
     "db:setup": "tsx src/db/setup.ts",
     "investigate": "tsx src/cli.ts",
+    "investigate:attack": "tsx src/cli.ts --attack",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

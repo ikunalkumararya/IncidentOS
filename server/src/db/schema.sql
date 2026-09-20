@@ -115,6 +115,10 @@ CREATE TABLE IF NOT EXISTS reports (
   markdown TEXT NOT NULL
 );
 
+-- Added when attack investigations shipped. Applied idempotently alongside
+-- the rest of this file on every boot, same as everything else here.
+ALTER TABLE runs ADD COLUMN IF NOT EXISTS kind TEXT NOT NULL DEFAULT 'incident';
+
 -- Real intake is separate from the deterministic demo fixtures.
 CREATE TABLE IF NOT EXISTS incoming_incidents (
   id TEXT PRIMARY KEY,
