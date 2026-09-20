@@ -10,7 +10,9 @@
     "dev:web": "pnpm --filter @incident-os/web dev",
     "generate:demo-data": "tsx scripts/generate-demo-data.ts",
     "investigate": "pnpm --filter @incident-os/server investigate",
-    "typecheck": "tsc --noEmit -p server/tsconfig.json"
+    "typecheck": "tsc --noEmit -p server/tsconfig.json",
+    "demo:promote": "tsx scripts/promote-recording.ts",
+    "verify": "tsx scripts/verify-setup.ts"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
