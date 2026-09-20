@@ -10,12 +10,6 @@ write code before the earlier stages' docs exist and have been reviewed.
 1. **HLD (Fable / creative planner tier)** — analyze requirements, produce a High-Level Design:
    architecture overview, data models, step-by-step implementation roadmap. Save to `docs/HLD.md`.
    No code in this stage.
-2. **LLD (Opus / deep reasoning tier)** — read `docs/HLD.md`, break every component into strict
-   technical specs: interface definitions, API contracts, edge-case handling. Save to `docs/LLD.md`
-   plus file stubs or a detailed task checklist.
-3. **Implementation (Sonnet / fast high-context coding tier)** — read both `docs/HLD.md` and
-   `docs/LLD.md`, generate the codebase file-by-file, run tests, and debug until the checklist is
-   complete.
 
 When Claude Code is asked to run this pipeline, use the Agent tool with the `model` override
 (`fable`, `opus`, `sonnet`) to execute each stage on its designated tier, and gate each handoff on
@@ -53,7 +47,7 @@ pnpm verify                       # preflight: fixtures match timeline, defect p
 Run `pnpm verify` before presenting a demo — it's the single check that fixtures, the injected
 defect, and the fallback recording are all still consistent.
 
-There is no lint script and no test runner at the workspace root. Tests live inside the *generated*
+There is no lint script and no test runner at the workspace root. Tests live inside the _generated_
 demo repository (`demo-data/repository/payments-api`, vitest) and are executed by the agent itself
 via the `run_tests` tool during an investigation, not by a developer command — the agent runs them
 against `.sandbox/payments-api`, a throwaway copy created per run.
@@ -117,6 +111,7 @@ process. A failing tool returns a real error to the model — never a fabricated
 ### Reliability: live path + recording fallback
 
 The primary path is the live Anthropic API. `server/src/runner.ts` wraps it with:
+
 - a wall-clock cap (`INVESTIGATION_TIMEOUT_MS`, default 90s) — on timeout or API failure, the run
   emits `demo_mode` and finishes from the last promoted recording instead of failing outright;
 - `DEMO_MODE=1` to always replay the recording and never call the API;

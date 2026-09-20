@@ -29,6 +29,96 @@ Open <http://localhost:3000> for the landing page, or go straight to
 | `/` | Landing page. Fully static — no server, no API key, no network. The investigation replay on it is scripted from a real run. |
 | `/signin`, `/signup` | Database-backed registration and sign-in. |
 | `/dashboard` | Incident and attack analysis. Requires sign-in and the API server. |
+| `/report` | Public incident report form. No sign-in. Posts through a server-side signing proxy. |
+| `/shop` | Demo storefront. Its checkout fails on purpose so a customer can report a real incident. |
+
+### The demo storefront
+
+`/shop` is a prop with a purpose: ten products, a basket, and a checkout that
+fails at the payment step every time. Nothing is charged and no payment provider
+is contacted — the failure is simulated in the browser — but the report it
+produces is real, and travels the same signed path as any other.
+
+It exists because a report form on its own does not show the interesting part.
+Here a customer hits a plausible failure, describes it in their own words, and
+the technical context they could not be expected to supply — order reference,
+timestamp, `ERR_CAPTURE_TIMEOUT`, basket contents — is attached automatically.
+That context is what the investigation then has something to work with; the
+resulting report cites the reference and the timestamp back at you.
+
+The report is filed against `payments-api` rather than the page the customer was
+on, because the failure is at capture.
+
+### Both intake paths, from one page
+
+The storefront header has a **Simulate a log spike** button, which is the other
+way an incident starts: a collector noticing trouble with no customer involved.
+It posts to `/api/logs`, a second signing proxy alongside the report one.
+
+The browser supplies nothing but the click. The batch — thirteen lines of a
+payments-api degradation, latency creeping, then memory, then the pod dying —
+is written server-side in `apps/web/app/api/logs/route.ts`. That endpoint is
+public and unauthenticated, and a batch reaching `/api/webhooks/logs` can raise
+a critical incident on its own and have its lines fed to a model as evidence;
+letting a caller dictate those lines would be letting them forge the evidence an
+investigation reasons over.
+
+Nor does the route decide the outcome. The batch goes to the real detector
+(`detectAnomaly`), which applies its own thresholds and picks the title and
+severity — the press above produced `payments-api: fatal log detected` at
+critical, from the fatal line in the sample. The route reports what the detector
+decided; it cannot fake a detection. Limited to three presses per IP per ten
+minutes, tighter than reports, because one press raises a SEV-worthy incident by
+itself.
+
+### Seeding the dashboard
+
+A fresh database shows an empty incident list. `pnpm seed:incidents` queues four
+intakes across all three sources — a monitoring detection with log evidence, a
+website report, another detection, and a manually raised one. `--reset` removes
+them again, and re-running inserts nothing the second time.
+
+What it seeds is the *intake* only: the report or the log batch, exactly as the
+collector would have delivered it. The running worker then investigates each one
+for real. Nothing writes phases, timings or reports directly — seeding those
+would put fabricated numbers on screen beside measured ones with no way to tell
+them apart. The API server has to be up for the queue to drain; with it down the
+incidents sit queued until it returns. Expect about a minute and a half each,
+run one at a time.
+
+### Reporting an incident from the public site
+
+`/report` lets someone with no account file an incident. It does not talk to the
+API server directly: the intake webhook authenticates callers with a shared HMAC
+secret, and a browser cannot hold that secret. The form posts to
+`apps/web/app/api/report/route.ts`, a Next route handler that runs only on the
+server, signs the exact bytes it forwards, and calls `POST /api/webhooks/incidents`.
+From there the report is an ordinary queued incident — same table, same worker,
+same review step as one raised by a teammate.
+
+`INCIDENT_WEBHOOK_SECRET` reaches that handler through `process.env` at request
+time. It is never listed in `next.config.mjs`'s `env` block, because every key in
+that block is inlined into the client bundle at build time. With the secret unset
+the form says intake is not configured rather than pretending to file anything.
+
+This is the only unauthenticated write path in the app, so the proxy carries the
+abuse controls: a 32 kB body cap, three reports per IP per ten minutes, and a
+global ceiling of sixty in the same window. The limiter is in memory
+(`apps/web/lib/rateLimit.ts`) — per process, forgiven on restart. That is
+deliberately a speed bump for casual flooding rather than a real control; a
+deployment that needs one wants a shared store.
+
+Two fields are not accepted from the public. `eventId` is the webhook's
+idempotency key, and letting a caller choose one would let them collide with
+somebody else's report and silently suppress it, so the proxy mints one per
+submission. `severity` is left to the webhook's `medium` default, because a
+stranger who can declare SEV-1 controls the queue order.
+
+Submitted text is untrusted and ends up in an LLM prompt. The worker's system
+prompt already instructs treating report fields as data rather than instructions
+([worker.ts](server/src/incidents/worker.ts)), and its output goes to a human for
+review. That containment matters more if intake is ever wired to the tool-using
+investigator, which can patch code.
 
 ### Shared database with Neon
 
@@ -264,3 +354,50 @@ INVESTIGATION_TIMEOUT_MS=90000
 ATTACK_TIMEOUT_MS=180000
 DEMO_MODE=0
 ```
+
+## Incident intake and investigation
+
+The Incident analysis page lists real incidents, accepts team reports, and refreshes investigation
+progress automatically. **View demo** opens the original fixture investigation separately.
+
+- `POST /api/webhooks/incidents`: website-backend reports with `eventId`, `title`, `service`,
+  `description`, and optional `severity` (`low`, `medium`, `high`, `critical`).
+- `POST /api/webhooks/logs`: monitoring windows with `eventId`, `service`, and `entries` containing
+  ISO `timestamp`, `level` (`debug`, `info`, `warn`, `error`, `fatal`), and `message`.
+  Send at most 200 entries spanning at most five minutes. A fatal entry, OOM/crash signal, or at
+  least five error entries comprising 20% of the batch creates an incident.
+- Reuse the same `eventId` for delivery retries. Deduplication is by source and event ID;
+  related alerts with different IDs are not grouped automatically.
+
+Both webhook endpoints require `Content-Type: application/json`, `x-incident-timestamp` (Unix
+seconds), and `x-incident-signature` (`sha256=` followed by the hex HMAC-SHA256 of
+`<timestamp>.<exact request body>`). Use `INCIDENT_WEBHOOK_SECRET` on the sender backend and
+IncidentOS server. Signatures expire after five minutes. Never put this secret in browser code.
+
+For a local integration check, save a payload to a JSON file and run:
+
+```bash
+pnpm webhook:send incidents report.json
+pnpm webhook:send logs logs.json
+```
+
+The sender defaults to localhost:4000; override `INCIDENT_API_URL` to target a hosted API.
+For example, a report payload is:
+
+```json
+{"eventId":"website-ticket-123","title":"Checkout fails","service":"checkout","description":"Customers receive a 500 response when submitting payment.","severity":"high"}
+```
+
+Run `pnpm db:setup` after updating the schema, then restart the server. Incidents are persisted
+before acknowledgment and processed by a database-backed queue with restart recovery. Analysis
+uses the submitted report/logs, not the demo's telemetry. AI failures remain visible and can be
+retried from the dashboard; completed findings require human review and do not apply fixes or
+mark the underlying issue resolved. Configure a valid `CLAUDE_MODEL` and `ANTHROPIC_API_KEY`.
+External log providers still need to forward their batches to the log endpoint.
+
+## Auth routing
+
+Signed-in users visiting `/`, `/signin`, or `/signup` are redirected to the dashboard after the
+API validates their session. Invalid sessions and API outages leave sign-in accessible. For hosted
+setups, `API_INTERNAL_URL` can specify the API address reachable by Next middleware; it otherwise
+uses `NEXT_PUBLIC_API_BASE`, then localhost:4000.

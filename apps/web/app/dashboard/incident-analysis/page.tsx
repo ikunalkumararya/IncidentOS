@@ -1,271 +1,191 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { IncidentChart } from "@/components/IncidentChart";
-import {
-  ActivityFeed,
-  Diff,
-  Hypotheses,
-  Panel,
-  PhaseStepper,
-  Report,
-  RootCauseCard,
-  Verification,
-} from "@/components/panels";
-import type { Incident, TimelineMarker, TimelinePoint } from "@/lib/types";
-import { API_BASE, useInvestigation } from "@/lib/useInvestigation";
+import { useEffect, useRef, useState } from "react";
+import DemoIncidentAnalysis from "@/components/DemoIncidentAnalysis";
+import { IncidentPhases, type PhasePlanItem, type PhaseRow } from "@/components/IncidentPhases";
+import { Report } from "@/components/panels";
+import { API_BASE } from "@/lib/useInvestigation";
 
-const PHASES = [
-  { key: "investigate", label: "Context" },
-  { key: "hypothesize", label: "Hypotheses" },
-  { key: "prove", label: "Evidence" },
-  { key: "fix", label: "Fix" },
-  { key: "verify", label: "Verify" },
-  { key: "report", label: "Report" },
-] as const;
+type Incident = {
+  id: string; title: string; service: string; severity: string; source: string;
+  status: string; created_at: string; description?: string; report?: string; error?: string;
+  evidence?: { timestamp: string; level: string; message: string }[];
+  phases?: PhaseRow[]; phasePlan?: PhasePlanItem[]; phases_done?: number;
+};
+const statusLabels: Record<string, string> = { queued: "Queued", investigating: "Investigating", review: "Needs review", failed: "Failed" };
+const sourceLabels: Record<string, string> = { website: "Website report", monitoring: "Log detection", manual: "Team report" };
+const field = "w-full rounded-lg border border-[var(--color-hairline)] bg-[var(--color-surface)] px-3 py-2 text-sm focus:outline-2 focus:outline-[var(--color-clay-deep)]";
+const button = "min-h-10 rounded-lg bg-[var(--color-ink)] px-4 py-2 text-sm text-[var(--color-surface)] disabled:opacity-50";
+
+async function request(path: string, options?: RequestInit) {
+  const response = await fetch(`${API_BASE}/api/incidents${path}`, { ...options, credentials: "include", headers: { "Content-Type": "application/json", ...options?.headers } });
+  const body = await response.json();
+  if (!response.ok) throw new Error(body.error ?? "Unable to load incidents");
+  return body;
+}
 
 export default function IncidentAnalysisPage() {
-  const { state, start } = useInvestigation();
-  const [incident, setIncident] = useState<Incident | null>(null);
-  const [timeline, setTimeline] = useState<{ points: TimelinePoint[]; markers: TimelineMarker[] }>({
-    points: [],
-    markers: [],
-  });
-  const [offline, setOffline] = useState(false);
+  const [demo, setDemo] = useState(false);
+  const [incidents, setIncidents] = useState<Incident[]>([]);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [detail, setDetail] = useState<Incident | null>(null);
+  const [error, setError] = useState("");
+  const [detailError, setDetailError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [creating, setCreating] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [formError, setFormError] = useState("");
+  const [retrying, setRetrying] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+  const deletedIds = useRef(new Set<string>());
+  const [version, setVersion] = useState(0);
+  const reportRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    Promise.all([
-      fetch(`${API_BASE}/api/incident`, { credentials: "include" }).then((r) => r.json()),
-      fetch(`${API_BASE}/api/timeline`, { credentials: "include" }).then((r) => r.json()),
-    ])
-      .then(([i, t]) => {
-        setIncident(i);
-        setTimeline(t);
-      })
-      .catch(() => setOffline(true));
-  }, []);
+    if (demo) return;
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout>;
+    async function refresh() {
+      try {
+        const body = await request("");
+        if (!cancelled) { setIncidents(body.incidents.filter((incident: Incident) => !deletedIds.current.has(incident.id))); setError(""); }
+      } catch (e) { if (!cancelled) setError(e instanceof Error ? e.message : "Unable to load incidents"); }
+      finally { if (!cancelled) { setLoading(false); timer = setTimeout(refresh, 4000); } }
+    }
+    void refresh();
+    return () => { cancelled = true; clearTimeout(timer); };
+  }, [demo, version]);
 
-  const running = state.status === "running";
-  const resolved = state.status === "resolved";
-  const reachedIndex = resolved ? PHASES.length : PHASES.findIndex((p) => p.key === state.phase);
+  useEffect(() => {
+    setDetail(null); setDetailError(""); setDeleteError("");
+    if (!selected || demo) return;
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout>;
+    async function refresh() {
+      try {
+        const body = await request(`/${selected}`);
+        if (!cancelled) { setDetail(body); setDetailError(""); }
+      } catch (e) { if (!cancelled) setDetailError(e instanceof Error ? e.message : "Unable to load incident"); }
+      finally { if (!cancelled) timer = setTimeout(refresh, 3000); }
+    }
+    void refresh();
+    return () => { cancelled = true; clearTimeout(timer); };
+  }, [selected, demo, version]);
 
-  return (
-    <>
-      <header className="mb-6 flex items-center justify-between">
-        <h1 className="text-[15px] font-semibold tracking-tight">Incident analysis</h1>
-        <div className="flex items-center gap-2 text-xs">
-          <span
-            aria-hidden
-            className={`inline-block h-2 w-2 rounded-full ${running ? "pulsing" : ""}`}
-            style={{
-              background: state.demoMode
-                ? "var(--color-status-warning)"
-                : running
-                  ? "var(--color-status-good)"
-                  : "var(--color-ink-muted)",
-            }}
-          />
-          <span className="uppercase tracking-wide text-[var(--color-ink-muted)]">
-            {state.demoMode ? "Demo mode" : running ? "Live" : "Idle"}
-          </span>
+  async function deleteIncident(incident: Incident) {
+
+    if (!window.confirm(`Delete “${incident.title}”? This permanently removes the incident and its investigation history.`)) return;
+    const id = incident.id;
+    setDeleting(true); setDeleteError("");
+    try {
+      await request(`/${id}`, { method: "DELETE" });
+      deletedIds.current.add(id);
+      setIncidents(items => items.filter(item => item.id !== id));
+      setSelected(current => current === id ? null : current);
+      setVersion(v => v + 1);
+    } catch (e) { setDeleteError(e instanceof Error ? e.message : "Unable to delete incident"); }
+    finally { setDeleting(false); }
+
+  }
+
+  return <>
+    <header className="mb-6 flex flex-wrap items-center justify-between gap-4">
+      <div><h1 className="text-3xl">Incident analysis</h1><p className="mt-2 text-sm text-[var(--color-ink-muted)]">Website reports and log detections, investigated in one place.</p></div>
+      <div className="flex gap-2">
+        <button className="rounded-lg border border-[var(--color-hairline)] px-4 py-2 text-sm" onClick={() => setDemo(!demo)}>{demo ? "Back to incidents" : "View demo"}</button>
+        {!demo && <button className={button} onClick={() => { setCreating(!creating); setFormError(""); }}>{creating ? "Cancel" : "Report incident"}</button>}
+      </div>
+    </header>
+    {demo ? <DemoIncidentAnalysis /> : <>
+      {creating && <form className="panel mb-6 space-y-4 p-5" onSubmit={async event => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const data = new FormData(form);
+        // Retain the key on failures so a retry cannot create a second incident.
+        const eventId = form.dataset.eventId ?? crypto.randomUUID();
+        form.dataset.eventId = eventId;
+        setSaving(true); setFormError("");
+        try {
+          const body = await request("", { method: "POST", body: JSON.stringify({ eventId, title: data.get("title"), service: data.get("service"), severity: data.get("severity"), description: data.get("description") }) });
+          setSelected(body.incident.id); setCreating(false); setVersion(v => v + 1);
+        } catch (e) { setFormError(e instanceof Error ? e.message : "Unable to create incident"); }
+        finally { setSaving(false); }
+      }}>
+        <h2 className="text-xl">Report an incident</h2>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <label className="space-y-1 text-sm">Title<input className={field} name="title" required minLength={3} maxLength={200} placeholder="Checkout requests are failing" /></label>
+          <label className="space-y-1 text-sm">Service<input className={field} name="service" required maxLength={100} placeholder="payments-api" /></label>
+          <label className="space-y-1 text-sm">Severity<select className={field} name="severity" defaultValue="medium"><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option><option value="critical">Critical</option></select></label>
         </div>
-      </header>
-
-      {offline && (
-        <div className="panel mb-5 border-[var(--color-status-critical)]/40 p-4 text-sm">
-          <p className="font-medium">Unable to reach the investigation engine.</p>
-          <p className="mt-1 text-[var(--color-ink-muted)]">
-            Start it with <code className="font-mono">pnpm dev:server</code> — expected at {API_BASE}.
-          </p>
-        </div>
-      )}
-
-      {state.demoMode && (
-        <div className="panel mb-5 border-[var(--color-status-warning)]/40 p-3 text-sm">
-          <span className="font-medium text-[var(--color-status-warning)]">DEMO MODE</span>
-          <span className="ml-2 text-[var(--color-ink-secondary)]">
-            {state.demoMode} Replaying a recorded investigation.
-          </span>
-        </div>
-      )}
-
-      {/* ---------------------------------------------------------- */}
-      {/* Incident card                                               */}
-      {/* ---------------------------------------------------------- */}
-      <section className="panel mb-5 p-5">
-        <div className="flex flex-wrap items-start justify-between gap-5">
-          <div>
-            <p className="font-mono text-xs text-[var(--color-ink-muted)]">
-              INCIDENT #{incident?.number ?? "—"}
-            </p>
-            <h2 className="mt-1 text-2xl font-semibold tracking-tight">
-              {incident?.title ?? "Loading incident…"}
-            </h2>
-            <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[var(--color-ink-secondary)]">
-              <span className="flex items-center gap-1.5">
-                <span
-                  aria-hidden
-                  className="inline-block h-2 w-2 rounded-full"
-                  style={{ background: "var(--color-status-critical)" }}
-                />
-                {incident?.severity ?? "—"}
-              </span>
-              <span className="font-mono">{incident?.service ?? "—"}</span>
-              <span className="text-[var(--color-ink-muted)]">
-                started {incident?.startedAt.slice(11, 16) ?? "—"}
-              </span>
-              <span
-                className="rounded px-2 py-0.5 text-[11px] uppercase tracking-wide"
-                style={{
-                  background: resolved
-                    ? "color-mix(in srgb, var(--color-status-good) 18%, transparent)"
-                    : "color-mix(in srgb, var(--color-status-warning) 18%, transparent)",
-                  color: resolved ? "var(--color-status-good)" : "var(--color-status-warning)",
-                }}
-              >
-                {resolved ? "Resolved" : (incident?.status ?? "—")}
-              </span>
-            </div>
-          </div>
-
-          <dl className="flex gap-7">
-            <Stat
-              label="Error rate"
-              value={incident ? `${incident.metrics.errorRatePercent}%` : "—"}
-              tone="var(--color-series-errors)"
-            />
-            <Stat
-              label="Peak memory"
-              value={incident ? `${incident.metrics.memoryPercent}%` : "—"}
-              tone="var(--color-series-memory)"
-            />
-            <Stat
-              label="Pods restarting"
-              value={incident ? `${incident.metrics.podsRestarting}/${incident.metrics.podsTotal}` : "—"}
-            />
-          </dl>
-        </div>
-
-        <div className="mt-4 border-t border-[var(--color-hairline)] pt-3">
-          <IncidentChart points={timeline.points} markers={timeline.markers} />
-        </div>
-
-        <div className="mt-2 flex flex-wrap items-center gap-4">
-          <button
-            onClick={start}
-            disabled={running}
-            className="rounded-md px-5 py-2.5 text-sm font-semibold transition disabled:cursor-not-allowed"
-            style={{
-              background: running ? "var(--color-inset)" : "var(--color-clay-deep)",
-              color: running ? "var(--color-ink-muted)" : "#fffefa",
-            }}
-          >
-            {running ? "Investigating…" : resolved ? "Investigate again" : "Investigate incident"}
-          </button>
-
-          {(running || resolved) && (
-            <PhaseStepper phases={PHASES} current={state.phase} reachedIndex={reachedIndex} />
-          )}
-
-          {resolved && (
-            <span className="ml-auto text-xs text-[var(--color-ink-muted)] tabular">
-              completed in {(state.durationMs / 1000).toFixed(1)}s
-            </span>
-          )}
-        </div>
-      </section>
-
-      {state.status !== "idle" && (
-        <div className="grid gap-5 lg:grid-cols-2">
-          <Panel
-            title="Investigation"
-            accessory={
-              state.phaseLabel ? (
-                <span className="text-xs text-[var(--color-ink-muted)]">{state.phaseLabel}</span>
-              ) : null
-            }
-            className="lg:col-span-2"
-          >
-            <ActivityFeed items={state.activity} running={running} />
-          </Panel>
-
-          <Panel title="Root-cause hypotheses">
-            <Hypotheses hypotheses={state.hypotheses} />
-          </Panel>
-
-          <div className="space-y-5">
-            <Panel title="Root cause">
-              <RootCauseCard rootCause={state.rootCause} hypotheses={state.hypotheses} />
-            </Panel>
-
-            <Panel title="Verification">
-              <Verification state={state} />
-            </Panel>
-          </div>
-
-          {state.patches.length > 0 && (
-            <Panel title="Code change" className="lg:col-span-2">
-              <div className="space-y-4">
-                {state.patches.map((patch, i) => (
-                  <div key={i} className="enter">
-                    <p className="mb-2 font-mono text-xs text-[var(--color-ink-secondary)]">{patch.path}</p>
-                    <Diff diff={patch.diff} />
-                    <p className="mt-1.5 text-xs text-[var(--color-ink-muted)]">{patch.rationale}</p>
-                  </div>
-                ))}
-              </div>
-            </Panel>
-          )}
-
-          {resolved && (
-            <section className="panel lg:col-span-2 border-[var(--color-status-good)]/40 p-5 text-center">
-              <p
-                className="text-xl font-semibold tracking-tight"
-                style={{ color: "var(--color-status-good)" }}
-              >
-                INCIDENT RESOLVED
-              </p>
-            </section>
-          )}
-
-          {state.report && (
-            <Panel
-              title="Incident report"
-              className="lg:col-span-2"
-              accessory={
-                <button
-                  onClick={() => downloadReport(state.report!, incident?.id ?? "incident")}
-                  className="rounded border border-[var(--color-hairline)] px-2.5 py-1 text-xs text-[var(--color-ink-secondary)] transition hover:text-[var(--color-ink)]"
-                >
-                  Export Markdown
-                </button>
-              }
+        <label className="block space-y-1 text-sm">What happened?<textarea className={field} name="description" required minLength={10} maxLength={12000} rows={3} placeholder="Describe the symptoms, affected users, and when the issue started." /></label>
+        <p className="text-xs text-[var(--color-ink-muted)]">Submitting starts an investigation. Findings require review before taking action.</p>
+        {formError && <p role="alert" className="text-sm text-[var(--color-status-critical)]">{formError}</p>}
+        <button disabled={saving} className={button}>{saving ? "Submitting…" : "Create and investigate"}</button>
+      </form>}
+      {error && <p role="alert" className="mb-4 text-sm text-[var(--color-status-critical)]">{error}</p>}
+      {deleteError && <p role="alert" className="mb-3 text-sm text-[var(--color-status-critical)]">{deleteError}</p>}
+      <div className="grid items-start gap-5 lg:grid-cols-[minmax(280px,1fr)_minmax(0,2fr)]">
+        <section className="panel p-4" aria-label="Incidents">
+          <div className="mb-4 flex items-center justify-between"><h2 className="text-xl">Incoming incidents</h2><span className="text-xs text-[var(--color-ink-muted)]">Latest {incidents.length}</span></div>
+          {loading ? <p className="text-sm">Loading incidents…</p> : !incidents.length ? <div className="py-8 text-center"><p className="font-medium">No incidents yet</p><p className="mt-2 text-sm text-[var(--color-ink-muted)]">Report an issue or connect your website and log collector to start.</p></div> : <ul className="space-y-2">{incidents.map(incident => <li key={incident.id} className="relative">
+            <button onClick={() => setSelected(incident.id)} aria-pressed={selected === incident.id} className={`w-full rounded-xl border p-4 text-left transition ${selected === incident.id ? "border-[var(--color-clay)] bg-[var(--color-tab-active)]" : "border-[var(--color-hairline)] hover:bg-[var(--color-inset)]"}`}>
+              <span className="flex flex-wrap justify-between gap-2 pr-8 text-xs text-[var(--color-ink-muted)]"><span>{sourceLabels[incident.source]}</span><span>{statusLabels[incident.status]}</span></span>
+              <span className="mt-2 block break-words text-sm font-semibold">{incident.title}</span>
+              <span className="mt-2 block break-words text-xs text-[var(--color-ink-muted)]">{incident.service} · {incident.severity} · {new Date(incident.created_at).toLocaleString()}</span>
+              {incident.status === "investigating" && typeof incident.phases_done === "number" && <span className="mt-1 block text-xs text-[var(--color-ink-muted)]">{incident.phases_done} {incident.phases_done === 1 ? "phase" : "phases"} done</span>}
+            </button>
+            <button
+              type="button"
+              aria-label={`Delete incident: ${incident.title}`}
+              title="Delete incident"
+              disabled={deleting}
+              onClick={() => void deleteIncident(incident)}
+              className="absolute right-2 top-2 flex h-9 w-9 items-center justify-center rounded-lg text-[var(--color-ink-muted)] transition hover:bg-[var(--color-status-critical)]/10 hover:text-[var(--color-status-critical)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-status-critical)] disabled:opacity-40"
             >
-              <Report markdown={state.report} />
-            </Panel>
-          )}
-        </div>
-      )}
-    </>
-  );
-}
+              <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M9 6V4h6v2M5 6l1 14h12l1-14M10 10v6M14 10v6" /></svg>
+            </button>
+          </li>)}</ul>}
+        </section>
+        <section className="panel min-w-0 p-5" aria-label="Incident details">
+          {!selected ? <div className="py-16 text-center"><h2 className="text-2xl">Every signal has a story</h2><p className="mt-3 text-sm text-[var(--color-ink-muted)]">Select an incident to view its evidence and investigation.</p></div> : detailError ? <p role="alert">{detailError}</p> : !detail ? <p>Loading investigation…</p> : <>
+            <div className="mb-4 flex flex-wrap items-start justify-between gap-3"><div><p className="text-xs text-[var(--color-ink-muted)]">{sourceLabels[detail.source]} · {detail.severity}</p><h2 className="mt-2 break-words text-2xl">{detail.title}</h2><p className="mt-1 text-sm text-[var(--color-ink-muted)]">{detail.service}</p></div><span role="status" className="rounded-full bg-[var(--color-inset)] px-3 py-1 text-xs">{statusLabels[detail.status]}</span></div>
+            <div className="mb-4 flex justify-end">
+              <button
+                type="button"
+                disabled={deleting}
+                className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-[var(--color-status-critical)]/25 px-2.5 py-1.5 text-xs text-[var(--color-status-critical)] transition hover:bg-[var(--color-status-critical)]/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-status-critical)] disabled:opacity-50"
+                onClick={() => void deleteIncident(detail)}
+              >
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M9 6V4h6v2M5 6l1 14h12l1-14M10 10v6M14 10v6" /></svg>
+                {deleting ? "Deleting…" : "Delete incident"}
+              </button>
+            </div>
 
-function Stat({ label, value, tone }: { label: string; value: string; tone?: string }) {
-  return (
-    <div>
-      <dt className="text-[11px] uppercase tracking-wide text-[var(--color-ink-muted)]">{label}</dt>
-      <dd className="mt-0.5 text-2xl font-semibold tabular" style={tone ? { color: tone } : undefined}>
-        {value}
-      </dd>
-    </div>
-  );
-}
-
-function downloadReport(markdown: string, id: string) {
-  const url = URL.createObjectURL(new Blob([markdown], { type: "text/markdown" }));
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `${id}-report.md`;
-  link.click();
-  URL.revokeObjectURL(url);
+            <p className="whitespace-pre-wrap break-words text-sm leading-relaxed">{detail.description}</p>
+            {detail.evidence && detail.evidence.length > 0 && <details className="mt-5 rounded-lg border border-[var(--color-hairline)] p-3"><summary className="cursor-pointer text-sm">Log evidence ({detail.evidence.length} entries)</summary><div className="mt-3 max-h-80 space-y-2 overflow-auto font-mono text-xs">{detail.evidence.map((entry, i) => <p className="whitespace-pre-wrap break-words" key={i}>{entry.timestamp} [{entry.level}] {entry.message}</p>)}</div></details>}
+            <div className="mt-6 border-t border-[var(--color-hairline)] pt-5">
+              {detail.phases?.length ? <IncidentPhases
+                plan={detail.phasePlan ?? []}
+                phases={detail.phases}
+                status={detail.status}
+                onReviewReport={() => { reportRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }); reportRef.current?.focus(); }}
+              /> : <>
+                <h3 className="mb-3 text-sm font-semibold">Investigation</h3>
+                {detail.status === "queued" && <p className="text-sm text-[var(--color-ink-muted)]">Queued. The investigation starts automatically, usually within a few seconds.</p>}
+                {detail.status === "investigating" && <p className="text-sm text-[var(--color-ink-muted)]">Starting the investigation… This page updates automatically.</p>}
+              </>}
+              {detail.report && <div ref={reportRef} tabIndex={-1} className="mt-6 scroll-mt-6 border-t border-[var(--color-hairline)] pt-5 outline-none"><p className="mb-3 text-xs text-[var(--color-clay-deep)]">Needs human review · No fixes have been applied.</p><Report markdown={detail.report} /></div>}
+              {detail.status === "failed" && <><p role="alert" className="mb-3 text-sm text-[var(--color-status-critical)]">{detail.error}</p><button disabled={retrying} className={button} onClick={async () => {
+                setRetrying(true);
+                try { await request(`/${detail.id}/retry`, { method: "POST" }); setVersion(v => v + 1); }
+                catch (e) { setDetailError(e instanceof Error ? e.message : "Retry failed"); }
+                finally { setRetrying(false); }
+              }}>{retrying ? "Queuing…" : "Retry investigation"}</button></>}
+            </div>
+          </>}
+        </section>
+      </div>
+    </>}
+  </>;
 }
