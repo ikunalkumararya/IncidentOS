@@ -1,8 +1,13 @@
 node_modules/
 .next/
 dist/
+*.tsbuildinfo
 .env
 .env.local
+
+# Every live run writes a timestamped recording; those are local scratch.
+# The promoted fallback is what the demo replays, so it stays tracked.
+recordings/run-*.json
 
 # Scratch copy of the demo repository that the agent patches and tests.
 # Lives inside the workspace so Node resolves the root node_modules.
