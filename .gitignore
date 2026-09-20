@@ -1,0 +1,9 @@
+node_modules/
+.next/
+dist/
+.env
+.env.local
+
+# Scratch copy of the demo repository that the agent patches and tests.
+# Lives inside the workspace so Node resolves the root node_modules.
+.sandbox/
