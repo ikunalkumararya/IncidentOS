@@ -17,6 +17,7 @@ import { listRuns, loadRunEvents } from "./db/store.js";
 import { loadIncident } from "./incidents/index.js";
 import { loadFallback } from "./recorder.js";
 import { getRun, startInvestigation } from "./runner.js";
+import { buildAttackAnalysis } from "./security/index.js";
 import { buildTimeline } from "./timeline.js";
 
 const app = express();
@@ -76,6 +77,14 @@ app.get("/api/incident", requireAuth, (_req, res) => {
 /** Series behind the incident-card chart, plus the events worth annotating. */
 app.get("/api/timeline", requireAuth, (_req, res) => {
   res.json(buildTimeline());
+});
+
+/**
+ * Everything behind the attack-analysis tab: the campaign summary, the
+ * per-minute attempt series, the attributed sources and the control events.
+ */
+app.get("/api/attack-analysis", requireAuth, (_req, res) => {
+  res.json(buildAttackAnalysis());
 });
 
 app.post("/api/investigations", requireAuth, (_req, res) => {
