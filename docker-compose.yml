@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: incidentos-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: incidentos
+      POSTGRES_PASSWORD: incidentos
+      POSTGRES_DB: incidentos
+    ports:
+      - "5432:5432"
+    volumes:
+      - incidentos-pgdata:/var/lib/postgresql/data
+    # The server treats an unreachable database as non-fatal, so without a
+    # healthcheck an investigation started during boot would silently go
+    # unrecorded. This makes `docker compose up --wait` mean what it says.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U incidentos -d incidentos"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+      start_period: 5s
+
+volumes:
+  incidentos-pgdata:
