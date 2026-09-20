@@ -14,6 +14,8 @@
     "demo:promote": "tsx scripts/promote-recording.ts",
     "verify": "tsx scripts/verify-setup.ts",
     "db:up": "docker compose up -d --wait",
+    "db:check": "pnpm --filter @incident-os/server db:check",
+    "db:setup": "pnpm --filter @incident-os/server db:setup",
     "db:down": "docker compose down",
     "db:reset": "docker compose down -v && docker compose up -d --wait",
     "db:psql": "docker compose exec postgres psql -U incidentos -d incidentos"

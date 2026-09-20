@@ -16,28 +16,50 @@ test suite and a real memory measurement.
 ```bash
 pnpm install
 cp .env.example .env          # then add your ANTHROPIC_API_KEY
+pnpm db:up                    # local Postgres; skip when using Neon
 pnpm generate:demo-data       # writes demo-data/ from the incident simulation
 pnpm dev                      # server on :4000, dashboard on :3000
 ```
 
 Open <http://localhost:3000> for the landing page, or go straight to
-<http://localhost:3000/console> and press **Investigate incident**.
+<http://localhost:3000/dashboard> and press **Investigate incident**.
 
 | Route | What it is |
 |---|---|
 | `/` | Landing page. Fully static — no server, no API key, no network. The investigation replay on it is scripted from a real run. |
-| `/signin`, `/signup` | Auth pages. **Presentational only** — see below. |
-| `/console` | The live operational console. Needs the server on `:4000`. |
+| `/signin`, `/signup` | Database-backed registration and sign-in. |
+| `/dashboard` | Incident and attack analysis. Requires sign-in and the API server. |
 
-### A note on the auth pages
+### Shared database with Neon
 
-Spec §23 lists authentication under "do not build", and there is no account
-store here — so `/signin` and `/signup` are **UI, not security**. The forms
-validate properly and route to the console, but no credentials are checked, no
-account is created, nothing is persisted, and `/console` is reachable directly.
-Both pages say so on the page itself. Treat them as a demo surface; wiring real
-auth means adding an identity provider or a user table plus a session, and
-putting a guard in front of `/console`.
+The existing `pg` driver supports Neon PostgreSQL; no extra SDK is needed.
+
+1. Create a Neon project and copy the **pooled connection string** from its Connect dialog.
+2. In the root `.env`, set `DATABASE_URL` to that string, preserving its SSL parameters.
+   Keep `PERSIST=1` and `DATABASE_CONNECT_TIMEOUT_MS=15000`.
+3. Set `SEED_DEMO_USER=0` before the first boot of a shared database. Set `JWT_SECRET` to a
+   random secret (generate one with `openssl rand -hex 32`). Never use a `NEXT_PUBLIC_` variable
+   for database credentials or the JWT secret.
+4. Run `pnpm db:check` to check connectivity and TLS without changing the database.
+5. Run `pnpm dev`. The server automatically creates the tables in `server/src/db/schema.sql`.
+   Each teammate can register at `/signup`.
+
+Docker is optional when using Neon. The `db:up`, `db:down`, `db:reset`, and `db:psql` commands
+only manage the local Docker database; they do not manage Neon. Existing local data is not
+copied automatically. Disabling demo seeding does not remove an already-created demo account.
+
+Accounts and saved investigation runs are shared by every app server using the same database.
+This is one shared workspace: all registered users can access run history through the API;
+there are no team roles, invitations, comments, or workspace isolation yet. Incident and attack
+telemetry still comes from `demo-data/`. The dashboard does not yet provide a saved-run browser.
+Live streams and active runs remain in server memory, so use one shared API server for the team.
+
+For a hosted team app, serve the web app and API under the same HTTPS origin (proxy `/api` to
+Express), set `WEB_ORIGIN` to that origin, and build the web app with `NEXT_PUBLIC_API_BASE`
+set to that origin. Set `NODE_ENV=production` on the server for secure session cookies.
+Hosting the app is a separate step from connecting the database.
+
+See [Neon's connection pooling documentation](https://neon.com/docs/connect/connection-pooling).
 
 To watch it in the terminal instead, without the dashboard:
 

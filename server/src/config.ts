@@ -40,6 +40,14 @@ export const MAX_ITERATIONS_PER_PHASE = 14;
 export const DATABASE_URL =
   process.env.DATABASE_URL || "postgres://incidentos:incidentos@localhost:5432/incidentos";
 
+/** Allow time for a suspended cloud database to wake up. */
+export const DATABASE_CONNECT_TIMEOUT_MS = Number(process.env.DATABASE_CONNECT_TIMEOUT_MS ?? 15_000);
+if (!Number.isInteger(DATABASE_CONNECT_TIMEOUT_MS) || DATABASE_CONNECT_TIMEOUT_MS <= 0) {
+  throw new Error("DATABASE_CONNECT_TIMEOUT_MS must be a positive integer");
+}
+
+export const SEED_DEMO_USER = process.env.SEED_DEMO_USER !== "0";
+
 /**
  * Persistence is an enhancement, not a dependency: the demo runs and streams
  * identically with the database down. Set to 0 to skip connecting entirely.

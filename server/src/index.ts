@@ -10,6 +10,7 @@ import {
   JWT_SECRET_IS_DEFAULT,
   MODEL,
   PORT,
+  SEED_DEMO_USER,
   WEB_ORIGIN,
 } from "./config.js";
 import { initPersistence, isPersistenceReady } from "./db/pool.js";
@@ -142,7 +143,7 @@ const persistence = await initPersistence();
 // fresh database is otherwise unusable: every page behind sign-in would be
 // unreachable with no way to register that the demo script mentions.
 let seeded: string | null = null;
-if (persistence.ok) {
+if (persistence.ok && SEED_DEMO_USER) {
   seeded = await seedDemoUser()
     .then((r) => r.email)
     .catch(() => null);
@@ -161,7 +162,7 @@ app.listen(PORT, () => {
       persistence.ok
         ? seeded
           ? `ready — sign in as ${seeded}`
-          : "unavailable — seeding failed"
+          : SEED_DEMO_USER ? "unavailable — seeding failed" : "ready — register at /signup"
         : "DISABLED — sign-in needs the database (pnpm db:up)"
     }`,
   );
