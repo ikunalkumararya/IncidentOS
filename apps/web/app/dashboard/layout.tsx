@@ -64,7 +64,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     <div className="surface-light min-h-screen">
       <div className="w-full px-5 py-5 sm:py-7">
         <header className="mb-7 flex items-center justify-between gap-4 border-b border-[var(--color-hairline)] pb-5">
-          <Link href="/" className="group flex shrink-0 items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-clay-deep)]">
+          <Link href="/dashboard/incident-analysis" className="group flex shrink-0 items-center gap-3 rounded-lg focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-clay-deep)]">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-ink)] text-[var(--color-surface)] transition group-hover:bg-[var(--color-clay-deep)]" aria-hidden="true">
               <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 12h4l3-7 4 14 3-7h4" />

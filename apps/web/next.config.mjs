@@ -1,5 +1,29 @@
+import { existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
+/*
+ * The API server reads the repo-root .env through dotenv; Next only looks in
+ * its own directory. Load the same file here so server-only values — the
+ * webhook secret the /api/report handler signs with — reach route handlers in
+ * dev and in `next start`. On a platform that injects real environment
+ * variables there is no file and this is a no-op.
+ *
+ * Nothing loaded here is added to `env` below. Every key in that block is
+ * inlined into the client bundle at build time, so a secret placed there would
+ * ship to the browser.
+ */
+const rootEnv = fileURLToPath(new URL("../../.env", import.meta.url));
+if (existsSync(rootEnv)) process.loadEnvFile(rootEnv);
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  /*
+   * `next build` writes to the same directory `next dev` is serving from, so a
+   * verification build run against a live dev server replaces the chunks it has
+   * already handed the browser and breaks it until restart. Setting
+   * NEXT_DIST_DIR sends such a build somewhere harmless.
+   */
+  distDir: process.env.NEXT_DIST_DIR ?? ".next",
   env: {
     NEXT_PUBLIC_API_BASE: process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:4000",
     // Mirrored from the server's DEMO_USER_* so the sign-in page's one-click
