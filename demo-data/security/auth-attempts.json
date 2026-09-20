@@ -1,0 +1,331 @@
+{
+  "service": "payments-api",
+  "endpoint": "/v1/auth/token",
+  "unit": "attempts_per_minute",
+  "description": "Authentication attempts against the token endpoint, split by classification. Malicious attempts are those attributed to the flagged source ranges.",
+  "baselineRpm": 42,
+  "points": [
+    {
+      "t": "2026-03-11T14:00:00Z",
+      "legitimate": 43,
+      "malicious": 0,
+      "rateLimited": 0,
+      "reachedBackend": 43
+    },
+    {
+      "t": "2026-03-11T14:01:00Z",
+      "legitimate": 46,
+      "malicious": 0,
+      "rateLimited": 0,
+      "reachedBackend": 46
+    },
+    {
+      "t": "2026-03-11T14:02:00Z",
+      "legitimate": 39,
+      "malicious": 0,
+      "rateLimited": 0,
+      "reachedBackend": 39
+    },
+    {
+      "t": "2026-03-11T14:03:00Z",
+      "legitimate": 45,
+      "malicious": 0,
+      "rateLimited": 0,
+      "reachedBackend": 45
+    },
+    {
+      "t": "2026-03-11T14:04:00Z",
+      "legitimate": 37,
+      "malicious": 0,
+      "rateLimited": 0,
+      "reachedBackend": 37
+    },
+    {
+      "t": "2026-03-11T14:05:00Z",
+      "legitimate": 40,
+      "malicious": 5,
+      "rateLimited": 0,
+      "reachedBackend": 45
+    },
+    {
+      "t": "2026-03-11T14:06:00Z",
+      "legitimate": 46,
+      "malicious": 6,
+      "rateLimited": 0,
+      "reachedBackend": 52
+    },
+    {
+      "t": "2026-03-11T14:07:00Z",
+      "legitimate": 44,
+      "malicious": 7,
+      "rateLimited": 0,
+      "reachedBackend": 51
+    },
+    {
+      "t": "2026-03-11T14:08:00Z",
+      "legitimate": 43,
+      "malicious": 4,
+      "rateLimited": 0,
+      "reachedBackend": 47
+    },
+    {
+      "t": "2026-03-11T14:09:00Z",
+      "legitimate": 46,
+      "malicious": 5,
+      "rateLimited": 0,
+      "reachedBackend": 51
+    },
+    {
+      "t": "2026-03-11T14:10:00Z",
+      "legitimate": 44,
+      "malicious": 6,
+      "rateLimited": 0,
+      "reachedBackend": 50
+    },
+    {
+      "t": "2026-03-11T14:11:00Z",
+      "legitimate": 37,
+      "malicious": 8,
+      "rateLimited": 0,
+      "reachedBackend": 45
+    },
+    {
+      "t": "2026-03-11T14:12:00Z",
+      "legitimate": 41,
+      "malicious": 8,
+      "rateLimited": 0,
+      "reachedBackend": 49
+    },
+    {
+      "t": "2026-03-11T14:13:00Z",
+      "legitimate": 46,
+      "malicious": 8,
+      "rateLimited": 0,
+      "reachedBackend": 54
+    },
+    {
+      "t": "2026-03-11T14:14:00Z",
+      "legitimate": 40,
+      "malicious": 15,
+      "rateLimited": 0,
+      "reachedBackend": 55
+    },
+    {
+      "t": "2026-03-11T14:15:00Z",
+      "legitimate": 43,
+      "malicious": 46,
+      "rateLimited": 0,
+      "reachedBackend": 89
+    },
+    {
+      "t": "2026-03-11T14:16:00Z",
+      "legitimate": 42,
+      "malicious": 74,
+      "rateLimited": 0,
+      "reachedBackend": 116
+    },
+    {
+      "t": "2026-03-11T14:17:00Z",
+      "legitimate": 37,
+      "malicious": 93,
+      "rateLimited": 0,
+      "reachedBackend": 130
+    },
+    {
+      "t": "2026-03-11T14:18:00Z",
+      "legitimate": 41,
+      "malicious": 138,
+      "rateLimited": 86,
+      "reachedBackend": 93
+    },
+    {
+      "t": "2026-03-11T14:19:00Z",
+      "legitimate": 41,
+      "malicious": 143,
+      "rateLimited": 89,
+      "reachedBackend": 95
+    },
+    {
+      "t": "2026-03-11T14:20:00Z",
+      "legitimate": 39,
+      "malicious": 168,
+      "rateLimited": 104,
+      "reachedBackend": 103
+    },
+    {
+      "t": "2026-03-11T14:21:00Z",
+      "legitimate": 46,
+      "malicious": 216,
+      "rateLimited": 134,
+      "reachedBackend": 128
+    },
+    {
+      "t": "2026-03-11T14:22:00Z",
+      "legitimate": 38,
+      "malicious": 220,
+      "rateLimited": 136,
+      "reachedBackend": 122
+    },
+    {
+      "t": "2026-03-11T14:23:00Z",
+      "legitimate": 43,
+      "malicious": 261,
+      "rateLimited": 162,
+      "reachedBackend": 142
+    },
+    {
+      "t": "2026-03-11T14:24:00Z",
+      "legitimate": 39,
+      "malicious": 277,
+      "rateLimited": 172,
+      "reachedBackend": 144
+    },
+    {
+      "t": "2026-03-11T14:25:00Z",
+      "legitimate": 47,
+      "malicious": 324,
+      "rateLimited": 201,
+      "reachedBackend": 170
+    },
+    {
+      "t": "2026-03-11T14:26:00Z",
+      "legitimate": 46,
+      "malicious": 334,
+      "rateLimited": 207,
+      "reachedBackend": 173
+    },
+    {
+      "t": "2026-03-11T14:27:00Z",
+      "legitimate": 40,
+      "malicious": 310,
+      "rateLimited": 192,
+      "reachedBackend": 158
+    },
+    {
+      "t": "2026-03-11T14:28:00Z",
+      "legitimate": 41,
+      "malicious": 317,
+      "rateLimited": 197,
+      "reachedBackend": 161
+    },
+    {
+      "t": "2026-03-11T14:29:00Z",
+      "legitimate": 39,
+      "malicious": 276,
+      "rateLimited": 171,
+      "reachedBackend": 144
+    },
+    {
+      "t": "2026-03-11T14:30:00Z",
+      "legitimate": 39,
+      "malicious": 273,
+      "rateLimited": 169,
+      "reachedBackend": 143
+    },
+    {
+      "t": "2026-03-11T14:31:00Z",
+      "legitimate": 46,
+      "malicious": 233,
+      "rateLimited": 219,
+      "reachedBackend": 60
+    },
+    {
+      "t": "2026-03-11T14:32:00Z",
+      "legitimate": 43,
+      "malicious": 212,
+      "rateLimited": 199,
+      "reachedBackend": 56
+    },
+    {
+      "t": "2026-03-11T14:33:00Z",
+      "legitimate": 44,
+      "malicious": 180,
+      "rateLimited": 169,
+      "reachedBackend": 55
+    },
+    {
+      "t": "2026-03-11T14:34:00Z",
+      "legitimate": 38,
+      "malicious": 146,
+      "rateLimited": 137,
+      "reachedBackend": 47
+    },
+    {
+      "t": "2026-03-11T14:35:00Z",
+      "legitimate": 46,
+      "malicious": 113,
+      "rateLimited": 106,
+      "reachedBackend": 53
+    },
+    {
+      "t": "2026-03-11T14:36:00Z",
+      "legitimate": 42,
+      "malicious": 77,
+      "rateLimited": 72,
+      "reachedBackend": 47
+    },
+    {
+      "t": "2026-03-11T14:37:00Z",
+      "legitimate": 41,
+      "malicious": 44,
+      "rateLimited": 41,
+      "reachedBackend": 44
+    },
+    {
+      "t": "2026-03-11T14:38:00Z",
+      "legitimate": 41,
+      "malicious": 0,
+      "rateLimited": 0,
+      "reachedBackend": 41
+    },
+    {
+      "t": "2026-03-11T14:39:00Z",
+      "legitimate": 46,
+      "malicious": 0,
+      "rateLimited": 0,
+      "reachedBackend": 46
+    },
+    {
+      "t": "2026-03-11T14:40:00Z",
+      "legitimate": 37,
+      "malicious": 0,
+      "rateLimited": 0,
+      "reachedBackend": 37
+    },
+    {
+      "t": "2026-03-11T14:41:00Z",
+      "legitimate": 46,
+      "malicious": 1,
+      "rateLimited": 1,
+      "reachedBackend": 46
+    },
+    {
+      "t": "2026-03-11T14:42:00Z",
+      "legitimate": 45,
+      "malicious": 0,
+      "rateLimited": 0,
+      "reachedBackend": 45
+    },
+    {
+      "t": "2026-03-11T14:43:00Z",
+      "legitimate": 38,
+      "malicious": 0,
+      "rateLimited": 0,
+      "reachedBackend": 38
+    },
+    {
+      "t": "2026-03-11T14:44:00Z",
+      "legitimate": 43,
+      "malicious": 0,
+      "rateLimited": 0,
+      "reachedBackend": 43
+    },
+    {
+      "t": "2026-03-11T14:45:00Z",
+      "legitimate": 42,
+      "malicious": 0,
+      "rateLimited": 0,
+      "reachedBackend": 42
+    }
+  ]
+}

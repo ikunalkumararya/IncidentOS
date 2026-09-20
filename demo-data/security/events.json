@@ -1,0 +1,53 @@
+{
+  "events": [
+    {
+      "timestamp": "2026-03-11T14:05:12Z",
+      "severity": "info",
+      "control": "auth",
+      "title": "Elevated authentication failure ratio",
+      "detail": "Failure ratio on /v1/auth/token rose above the 20% baseline from a single source (185.220.101.47)."
+    },
+    {
+      "timestamp": "2026-03-11T14:14:05Z",
+      "severity": "warning",
+      "control": "auth",
+      "title": "Distributed failure pattern",
+      "detail": "Failures now spread across 6 source addresses in 6 countries, each below the per-IP threshold."
+    },
+    {
+      "timestamp": "2026-03-11T14:18:33Z",
+      "severity": "warning",
+      "control": "waf",
+      "title": "Rate-limit rule engaged",
+      "detail": "Rule auth-burst-v3 began rejecting requests to /v1/auth/token above 30/min per source."
+    },
+    {
+      "timestamp": "2026-03-11T14:26:41Z",
+      "severity": "critical",
+      "control": "detection",
+      "title": "Credential stuffing confirmed",
+      "detail": "Attempt rate peaked at 334/min. Reused credential pairs matched a known breach corpus."
+    },
+    {
+      "timestamp": "2026-03-11T14:27:18Z",
+      "severity": "critical",
+      "control": "identity",
+      "title": "Valid credentials accepted",
+      "detail": "billing-svc@northwind.example authenticated successfully from a flagged source; the account is not enrolled in MFA."
+    },
+    {
+      "timestamp": "2026-03-11T14:31:07Z",
+      "severity": "info",
+      "control": "waf",
+      "title": "Source ranges blocked",
+      "detail": "All 6 attributed ranges added to the edge deny list."
+    },
+    {
+      "timestamp": "2026-03-11T14:38:22Z",
+      "severity": "info",
+      "control": "detection",
+      "title": "Campaign contained",
+      "detail": "Attempt rate returned to baseline. One session revoked, one password reset enforced."
+    }
+  ]
+}

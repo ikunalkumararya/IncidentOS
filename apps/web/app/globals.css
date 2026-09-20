@@ -21,6 +21,14 @@
 
   --color-series-memory: #3987e5;
   --color-series-errors: #e66767;
+  /* Third categorical hue, for the attack chart. Chosen by running the
+     palette validator against the other two on the #0a0a0a surface: purple
+     and amber both fell below the normal-vision separation floor next to
+     the red. Teal clears the lightness band, chroma floor and contrast; its
+     CVD separation from the red sits in the 6-8 band, which is acceptable
+     here because each series has its own titled panel, so identity never
+     rests on colour alone. */
+  --color-series-blocked: #1f9e90;
 
   --color-status-good: #0ca30c;
   --color-status-warning: #fab219;

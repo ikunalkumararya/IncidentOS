@@ -1,0 +1,76 @@
+{
+  "id": "SEC-2291",
+  "title": "Credential stuffing against payments-api",
+  "service": "payments-api",
+  "severity": "SEV-2",
+  "status": "CONTAINED",
+  "technique": "Credential Stuffing",
+  "mitre": {
+    "id": "T1110.004",
+    "name": "Brute Force: Credential Stuffing"
+  },
+  "startedAt": "2026-03-11T14:05:00Z",
+  "detectedAt": "2026-03-11T14:26:41Z",
+  "containedAt": "2026-03-11T14:38:22Z",
+  "targetEndpoint": "/v1/auth/token",
+  "totals": {
+    "maliciousAttempts": 4548,
+    "rateLimited": 2964,
+    "reachedBackend": 1584,
+    "uniqueSources": 6,
+    "countries": 6,
+    "credentialsMatched": 3,
+    "sessionsCreated": 1
+  },
+  "peak": {
+    "at": "2026-03-11T14:26:00Z",
+    "attemptsPerMinute": 334
+  },
+  "compromised": [
+    {
+      "account": "ops-runner@northwind.example",
+      "at": "2026-03-11T14:24:00Z",
+      "mfa": "challenged",
+      "outcome": "blocked"
+    },
+    {
+      "account": "billing-svc@northwind.example",
+      "at": "2026-03-11T14:27:00Z",
+      "mfa": "not_enrolled",
+      "outcome": "session_created"
+    },
+    {
+      "account": "a.okafor@northwind.example",
+      "at": "2026-03-11T14:29:00Z",
+      "mfa": "challenged",
+      "outcome": "blocked"
+    }
+  ],
+  "relatedIncident": {
+    "id": "INC-4821",
+    "relationship": "unrelated",
+    "rationale": "The campaign targets /v1/auth/token and never raised payments throughput more than a few percent. The memory growth in INC-4821 begins at 14:21 with the v1.8.4 rollout, six minutes before this campaign peaks, and continues on pods that served no attacker traffic."
+  },
+  "markers": [
+    {
+      "t": "14:05",
+      "label": "probing"
+    },
+    {
+      "t": "14:14",
+      "label": "distributed ramp"
+    },
+    {
+      "t": "14:18",
+      "label": "rate limit"
+    },
+    {
+      "t": "14:31",
+      "label": "ranges blocked"
+    },
+    {
+      "t": "14:38",
+      "label": "contained"
+    }
+  ]
+}
