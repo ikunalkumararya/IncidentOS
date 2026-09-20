@@ -1,0 +1,12 @@
+.git
+**/node_modules
+**/.next*
+**/*.tsbuildinfo
+**/.env
+**/.env.*
+.env*
+.sandbox
+recordings/run-*.json
+deploy/*.env
+*.pem
+deploy/private

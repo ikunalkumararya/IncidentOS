@@ -12,3 +12,7 @@ recordings/run-*.json
 # Scratch copy of the demo repository that the agent patches and tests.
 # Lives inside the workspace so Node resolves the root node_modules.
 .sandbox/
+
+# Deployment secrets (examples remain tracked).
+deploy/*.env
+deploy/private/
