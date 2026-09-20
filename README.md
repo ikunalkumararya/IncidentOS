@@ -20,7 +20,24 @@ pnpm generate:demo-data       # writes demo-data/ from the incident simulation
 pnpm dev                      # server on :4000, dashboard on :3000
 ```
 
-Open <http://localhost:3000> and press **Investigate incident**.
+Open <http://localhost:3000> for the landing page, or go straight to
+<http://localhost:3000/console> and press **Investigate incident**.
+
+| Route | What it is |
+|---|---|
+| `/` | Landing page. Fully static — no server, no API key, no network. The investigation replay on it is scripted from a real run. |
+| `/signin`, `/signup` | Auth pages. **Presentational only** — see below. |
+| `/console` | The live operational console. Needs the server on `:4000`. |
+
+### A note on the auth pages
+
+Spec §23 lists authentication under "do not build", and there is no account
+store here — so `/signin` and `/signup` are **UI, not security**. The forms
+validate properly and route to the console, but no credentials are checked, no
+account is created, nothing is persisted, and `/console` is reachable directly.
+Both pages say so on the page itself. Treat them as a demo surface; wiring real
+auth means adding an identity provider or a user table plus a session, and
+putting a guard in front of `/console`.
 
 To watch it in the terminal instead, without the dashboard:
 
@@ -182,7 +199,13 @@ demo.
 ## Layout
 
 ```
-apps/web/            Next.js dashboard (SSE client, pure reducer)
+apps/web/
+  app/page.tsx       landing page
+  app/signin|signup/ presentational auth pages
+  app/console/       the live dashboard (SSE client, pure reducer)
+  components/landing/ scripted investigation replay, scroll reveals
+  components/auth/   auth shell, validated field
+  lib/useValidatedForm.ts  when a field is allowed to show an error
 server/
   src/agent/         prompts + the streaming tool loop
   src/tools/         the 11 tools
