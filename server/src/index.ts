@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
@@ -6,6 +8,7 @@ import { authRouter } from "./auth/routes.js";
 import { seedDemoUser } from "./auth/users.js";
 import {
   API_KEY,
+  DEMO_DATA,
   FORCE_DEMO_MODE,
   JWT_SECRET_IS_DEFAULT,
   MODEL,
@@ -17,8 +20,9 @@ import { initPersistence, isPersistenceReady } from "./db/pool.js";
 import { listRuns, loadRunEvents } from "./db/store.js";
 import { loadIncident } from "./incidents/index.js";
 import { loadFallback } from "./recorder.js";
-import { getRun, startInvestigation } from "./runner.js";
+import { getRun, startRun } from "./runner.js";
 import { buildAttackAnalysis } from "./security/index.js";
+import { LOG_FILES, lines as logLines } from "./tools/searchLogs.js";
 import { buildTimeline } from "./timeline.js";
 
 const app = express();
@@ -89,8 +93,33 @@ app.get("/api/attack-analysis", requireAuth, (_req, res) => {
 });
 
 app.post("/api/investigations", requireAuth, (_req, res) => {
-  const run = startInvestigation();
+  const run = startRun("incident");
   res.status(201).json({ runId: run.id, mode: run.mode });
+});
+
+app.post("/api/attack-investigations", requireAuth, (_req, res) => {
+  const run = startRun("attack");
+  res.status(201).json({ runId: run.id, mode: run.mode });
+});
+
+/** Tail of one log stream, for the attack tab's logs panel. */
+app.get("/api/logs", requireAuth, (req, res) => {
+  const stream = typeof req.query.stream === "string" ? req.query.stream : "payments-api-errors";
+  if (!(stream in LOG_FILES)) {
+    res.status(400).json({ error: `unknown log stream: ${stream}` });
+    return;
+  }
+  const requested = Number(req.query.limit ?? 120);
+  const limit = Math.min(500, Math.max(1, Number.isFinite(requested) ? requested : 120));
+  const all = logLines(LOG_FILES[stream]);
+  res.json({ stream, lines: all.slice(-limit) });
+});
+
+/** Raw Kubernetes events + pod status, for the attack tab's kubernetes panel. */
+app.get("/api/kubernetes-events", requireAuth, (_req, res) => {
+  const events = JSON.parse(readFileSync(join(DEMO_DATA, "kubernetes", "events.json"), "utf8"));
+  const pods = JSON.parse(readFileSync(join(DEMO_DATA, "kubernetes", "pods.json"), "utf8"));
+  res.json({ events: events.events, pods: pods.pods });
 });
 
 /**

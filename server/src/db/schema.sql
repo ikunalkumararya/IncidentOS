@@ -114,3 +114,7 @@ CREATE TABLE IF NOT EXISTS reports (
   run_id   TEXT PRIMARY KEY REFERENCES runs(id) ON DELETE CASCADE,
   markdown TEXT NOT NULL
 );
+
+-- Added when attack investigations shipped. Applied idempotently alongside
+-- the rest of this file on every boot, same as everything else here.
+ALTER TABLE runs ADD COLUMN IF NOT EXISTS kind TEXT NOT NULL DEFAULT 'incident';

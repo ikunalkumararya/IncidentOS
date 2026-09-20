@@ -10,6 +10,7 @@
     "dev:web": "pnpm --filter @incident-os/web dev",
     "generate:demo-data": "tsx scripts/generate-demo-data.ts && tsx scripts/generate-attack-data.ts",
     "investigate": "pnpm --filter @incident-os/server investigate",
+    "investigate:attack": "pnpm --filter @incident-os/server investigate:attack",
     "typecheck": "tsc --noEmit -p server/tsconfig.json",
     "demo:promote": "tsx scripts/promote-recording.ts",
     "verify": "tsx scripts/verify-setup.ts",

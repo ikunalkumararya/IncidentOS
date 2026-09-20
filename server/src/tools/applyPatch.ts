@@ -1,7 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { relative } from "node:path";
 import { z } from "zod";
-import { SANDBOX_REPO } from "../config.js";
 import { resolveInSandbox } from "../sandbox.js";
 import { defineTool, ToolError } from "./types.js";
 
@@ -66,9 +65,17 @@ export const applyPatch = defineTool({
           "tied to a proven cause is a guess.",
       );
     }
+    // Attack runs additionally require a named code location: patching the
+    // weakness without first pointing at exactly where it lives is still a
+    // guess, just a narrower one.
+    if (ctx.findings.kind === "attack" && !ctx.findings.codeLocation) {
+      throw new ToolError(
+        "Call report_code_location first: name the exact file and line of the weakness before patching it.",
+      );
+    }
 
-    const target = resolveInSandbox(input.path);
-    const rel = relative(SANDBOX_REPO, target);
+    const target = resolveInSandbox(input.path, ctx.sandboxRoot);
+    const rel = relative(ctx.sandboxRoot, target);
     const before = await readFile(target, "utf8");
 
     const first = before.indexOf(input.find);

@@ -20,7 +20,7 @@ export const runTestsTool = defineTool({
     "before the defect is fixed — a run where every test passes is the signal that the fix is correct.",
   schema,
   async run(_input, ctx) {
-    const types = await typecheck();
+    const types = await typecheck(ctx.sandboxRoot);
     ctx.emit({
       type: "verification",
       check: "TypeScript compilation",
@@ -37,7 +37,7 @@ export const runTestsTool = defineTool({
       };
     }
 
-    const report = await execTests();
+    const report = await execTests(ctx.sandboxRoot);
     ctx.findings.tests = report;
     ctx.emit({
       type: "test",

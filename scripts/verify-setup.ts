@@ -52,6 +52,10 @@ const required = [
   "kubernetes/deployments.json",
   "deployments/history.json",
   "incidents/INC-4821.json",
+  "security/auth-attempts.json",
+  "security/campaign.json",
+  "security/events.json",
+  "security/sources.json",
 ];
 for (const file of required) {
   check(file, existsSync(join(ROOT, "demo-data", file)));
@@ -84,6 +88,27 @@ if (existsSync(transactions)) {
     buggy ? "" : "the repository looks already fixed — restore it from git",
   );
 }
+
+const auth = join(ROOT, "demo-data", "repository", "payments-api", "src", "auth.ts");
+check("payments-api/src/auth.ts exists", existsSync(auth));
+
+if (existsSync(auth)) {
+  const source = readFileSync(auth, "utf8");
+  const hasIpThrottleState = source.includes("ipAttempts");
+  const looksFixed = /lock/i.test(source);
+  check("the auth defect scaffolding is present (ipAttempts)", hasIpThrottleState);
+  check(
+    "the auth defect is present (no per-account lockout)",
+    !looksFixed,
+    looksFixed ? "the auth defect looks already fixed — restore it from git" : "",
+  );
+}
+
+const authLockoutTest = join(ROOT, "demo-data", "repository", "payments-api", "tests", "auth-lockout.test.ts");
+check("payments-api/tests/auth-lockout.test.ts exists", existsSync(authLockoutTest));
+
+const attackSim = join(ROOT, "demo-data", "repository", "payments-api", "scripts", "attack-sim.ts");
+check("payments-api/scripts/attack-sim.ts exists", existsSync(attackSim));
 
 // -- toolchain --------------------------------------------------------------
 console.log("\nToolchain");

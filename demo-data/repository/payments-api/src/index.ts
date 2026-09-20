@@ -1,4 +1,6 @@
 export { aggregateTransaction, getRunningTotal, getTransactionCount, getAggregatedCurrencies, resetAggregation } from "./aggregation.js";
+export { issueToken, resetAuthState, getActiveSessionCount, listAccounts, PER_IP_LIMIT, AUTH_WINDOW_MS } from "./auth.js";
+export type { TokenRequest, TokenResult } from "./auth.js";
 export { formatAmount, isSupportedCurrency, SUPPORTED_CURRENCIES, toMajorUnits, toMinorUnits } from "./currency.js";
 export { buildHealthReport, QUEUE_DEPTH_WARNING, VERSION } from "./health.js";
 export { computeRefund } from "./refunds.js";
