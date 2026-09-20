@@ -1,0 +1,126 @@
+{
+  "namespace": "payments",
+  "service": "payments-api",
+  "pods": [
+    {
+      "name": "payments-api-7d9f8b6c4b-2xkqd",
+      "namespace": "payments",
+      "status": "Running",
+      "ready": "1/1",
+      "restarts": 2,
+      "lastRestartAt": "2026-03-11T14:38:45Z",
+      "lastTerminationReason": "OOMKilled",
+      "lastTerminationExitCode": 137,
+      "startedAt": "2026-03-11T14:22:11Z",
+      "image": "registry.internal/payments-api:v1.8.4",
+      "node": "ip-10-42-11-7.eu-west-1.compute.internal",
+      "resources": {
+        "requests": {
+          "cpu": "500m",
+          "memory": "1Gi"
+        },
+        "limits": {
+          "cpu": "1500m",
+          "memory": "2048Mi"
+        }
+      },
+      "currentMemoryPercent": 89
+    },
+    {
+      "name": "payments-api-7d9f8b6c4b-8vn4t",
+      "namespace": "payments",
+      "status": "Running",
+      "ready": "1/1",
+      "restarts": 2,
+      "lastRestartAt": "2026-03-11T14:44:20Z",
+      "lastTerminationReason": "OOMKilled",
+      "lastTerminationExitCode": 137,
+      "startedAt": "2026-03-11T14:22:11Z",
+      "image": "registry.internal/payments-api:v1.8.4",
+      "node": "ip-10-42-12-7.eu-west-1.compute.internal",
+      "resources": {
+        "requests": {
+          "cpu": "500m",
+          "memory": "1Gi"
+        },
+        "limits": {
+          "cpu": "1500m",
+          "memory": "2048Mi"
+        }
+      },
+      "currentMemoryPercent": 43.8
+    },
+    {
+      "name": "payments-api-7d9f8b6c4b-hb7wz",
+      "namespace": "payments",
+      "status": "Running",
+      "ready": "1/1",
+      "restarts": 1,
+      "lastRestartAt": "2026-03-11T14:35:27Z",
+      "lastTerminationReason": "OOMKilled",
+      "lastTerminationExitCode": 137,
+      "startedAt": "2026-03-11T14:23:11Z",
+      "image": "registry.internal/payments-api:v1.8.4",
+      "node": "ip-10-42-13-7.eu-west-1.compute.internal",
+      "resources": {
+        "requests": {
+          "cpu": "500m",
+          "memory": "1Gi"
+        },
+        "limits": {
+          "cpu": "1500m",
+          "memory": "2048Mi"
+        }
+      },
+      "currentMemoryPercent": 87
+    },
+    {
+      "name": "payments-api-7d9f8b6c4b-m5rjp",
+      "namespace": "payments",
+      "status": "Running",
+      "ready": "1/1",
+      "restarts": 1,
+      "lastRestartAt": "2026-03-11T14:39:24Z",
+      "lastTerminationReason": "OOMKilled",
+      "lastTerminationExitCode": 137,
+      "startedAt": "2026-03-11T14:23:11Z",
+      "image": "registry.internal/payments-api:v1.8.4",
+      "node": "ip-10-42-14-7.eu-west-1.compute.internal",
+      "resources": {
+        "requests": {
+          "cpu": "500m",
+          "memory": "1Gi"
+        },
+        "limits": {
+          "cpu": "1500m",
+          "memory": "2048Mi"
+        }
+      },
+      "currentMemoryPercent": 60.4
+    },
+    {
+      "name": "payments-api-7d9f8b6c4b-q9tlc",
+      "namespace": "payments",
+      "status": "Running",
+      "ready": "1/1",
+      "restarts": 1,
+      "lastRestartAt": "2026-03-11T14:40:37Z",
+      "lastTerminationReason": "OOMKilled",
+      "lastTerminationExitCode": 137,
+      "startedAt": "2026-03-11T14:24:11Z",
+      "image": "registry.internal/payments-api:v1.8.4",
+      "node": "ip-10-42-15-7.eu-west-1.compute.internal",
+      "resources": {
+        "requests": {
+          "cpu": "500m",
+          "memory": "1Gi"
+        },
+        "limits": {
+          "cpu": "1500m",
+          "memory": "2048Mi"
+        }
+      },
+      "currentMemoryPercent": 57
+    }
+  ]
+}

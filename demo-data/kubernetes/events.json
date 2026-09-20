@@ -1,0 +1,286 @@
+{
+  "namespace": "payments",
+  "service": "payments-api",
+  "events": [
+    {
+      "timestamp": "2026-03-11T14:10:12Z",
+      "type": "Normal",
+      "reason": "ScalingReplicaSet",
+      "object": "deployment/payments-api",
+      "message": "Scaled up replica set payments-api-6c8b94d7f9 to 5",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:21:04Z",
+      "type": "Normal",
+      "reason": "ScalingReplicaSet",
+      "object": "deployment/payments-api",
+      "message": "Scaled up replica set payments-api-7d9f8b6c4b to 1",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:22:08Z",
+      "type": "Normal",
+      "reason": "Created",
+      "object": "pod/payments-api-7d9f8b6c4b-2xkqd",
+      "message": "Created container payments-api (image: registry.internal/payments-api:v1.8.4)",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:22:08Z",
+      "type": "Normal",
+      "reason": "Created",
+      "object": "pod/payments-api-7d9f8b6c4b-8vn4t",
+      "message": "Created container payments-api (image: registry.internal/payments-api:v1.8.4)",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:22:11Z",
+      "type": "Normal",
+      "reason": "Started",
+      "object": "pod/payments-api-7d9f8b6c4b-2xkqd",
+      "message": "Started container payments-api",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:22:11Z",
+      "type": "Normal",
+      "reason": "Started",
+      "object": "pod/payments-api-7d9f8b6c4b-8vn4t",
+      "message": "Started container payments-api",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:23:08Z",
+      "type": "Normal",
+      "reason": "Created",
+      "object": "pod/payments-api-7d9f8b6c4b-hb7wz",
+      "message": "Created container payments-api (image: registry.internal/payments-api:v1.8.4)",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:23:08Z",
+      "type": "Normal",
+      "reason": "Created",
+      "object": "pod/payments-api-7d9f8b6c4b-m5rjp",
+      "message": "Created container payments-api (image: registry.internal/payments-api:v1.8.4)",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:23:11Z",
+      "type": "Normal",
+      "reason": "Started",
+      "object": "pod/payments-api-7d9f8b6c4b-hb7wz",
+      "message": "Started container payments-api",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:23:11Z",
+      "type": "Normal",
+      "reason": "Started",
+      "object": "pod/payments-api-7d9f8b6c4b-m5rjp",
+      "message": "Started container payments-api",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:23:27Z",
+      "type": "Normal",
+      "reason": "ScalingReplicaSet",
+      "object": "deployment/payments-api",
+      "message": "Scaled down replica set payments-api-6c8b94d7f9 to 0",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:24:08Z",
+      "type": "Normal",
+      "reason": "Created",
+      "object": "pod/payments-api-7d9f8b6c4b-q9tlc",
+      "message": "Created container payments-api (image: registry.internal/payments-api:v1.8.4)",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:24:11Z",
+      "type": "Normal",
+      "reason": "Started",
+      "object": "pod/payments-api-7d9f8b6c4b-q9tlc",
+      "message": "Started container payments-api",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:30:19Z",
+      "type": "Warning",
+      "reason": "OOMKilling",
+      "object": "pod/payments-api-7d9f8b6c4b-2xkqd",
+      "message": "Memory cgroup out of memory: Killed process (node) total-vm:3612044kB, anon-rss:2089344kB, limit 2048Mi",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:30:21Z",
+      "type": "Warning",
+      "reason": "BackOff",
+      "object": "pod/payments-api-7d9f8b6c4b-2xkqd",
+      "message": "Back-off restarting failed container payments-api",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:30:25Z",
+      "type": "Normal",
+      "reason": "Started",
+      "object": "pod/payments-api-7d9f8b6c4b-2xkqd",
+      "message": "Started container payments-api (restart #1)",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:33:23Z",
+      "type": "Warning",
+      "reason": "OOMKilling",
+      "object": "pod/payments-api-7d9f8b6c4b-8vn4t",
+      "message": "Memory cgroup out of memory: Killed process (node) total-vm:3612044kB, anon-rss:2089344kB, limit 2048Mi",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:33:25Z",
+      "type": "Warning",
+      "reason": "BackOff",
+      "object": "pod/payments-api-7d9f8b6c4b-8vn4t",
+      "message": "Back-off restarting failed container payments-api",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:33:29Z",
+      "type": "Normal",
+      "reason": "Started",
+      "object": "pod/payments-api-7d9f8b6c4b-8vn4t",
+      "message": "Started container payments-api (restart #1)",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:35:18Z",
+      "type": "Warning",
+      "reason": "Unhealthy",
+      "object": "pod/payments-api-7d9f8b6c4b-2xkqd",
+      "message": "Readiness probe failed: HTTP probe failed with statuscode: 503",
+      "count": 3
+    },
+    {
+      "timestamp": "2026-03-11T14:35:27Z",
+      "type": "Warning",
+      "reason": "OOMKilling",
+      "object": "pod/payments-api-7d9f8b6c4b-hb7wz",
+      "message": "Memory cgroup out of memory: Killed process (node) total-vm:3612044kB, anon-rss:2089344kB, limit 2048Mi",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:35:29Z",
+      "type": "Warning",
+      "reason": "BackOff",
+      "object": "pod/payments-api-7d9f8b6c4b-hb7wz",
+      "message": "Back-off restarting failed container payments-api",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:35:33Z",
+      "type": "Normal",
+      "reason": "Started",
+      "object": "pod/payments-api-7d9f8b6c4b-hb7wz",
+      "message": "Started container payments-api (restart #1)",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:38:45Z",
+      "type": "Warning",
+      "reason": "OOMKilling",
+      "object": "pod/payments-api-7d9f8b6c4b-2xkqd",
+      "message": "Memory cgroup out of memory: Killed process (node) total-vm:3612044kB, anon-rss:2089344kB, limit 2048Mi",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:38:47Z",
+      "type": "Warning",
+      "reason": "BackOff",
+      "object": "pod/payments-api-7d9f8b6c4b-2xkqd",
+      "message": "Back-off restarting failed container payments-api",
+      "count": 2
+    },
+    {
+      "timestamp": "2026-03-11T14:38:51Z",
+      "type": "Normal",
+      "reason": "Started",
+      "object": "pod/payments-api-7d9f8b6c4b-2xkqd",
+      "message": "Started container payments-api (restart #2)",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:39:24Z",
+      "type": "Warning",
+      "reason": "OOMKilling",
+      "object": "pod/payments-api-7d9f8b6c4b-m5rjp",
+      "message": "Memory cgroup out of memory: Killed process (node) total-vm:3612044kB, anon-rss:2089344kB, limit 2048Mi",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:39:26Z",
+      "type": "Warning",
+      "reason": "BackOff",
+      "object": "pod/payments-api-7d9f8b6c4b-m5rjp",
+      "message": "Back-off restarting failed container payments-api",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:39:30Z",
+      "type": "Normal",
+      "reason": "Started",
+      "object": "pod/payments-api-7d9f8b6c4b-m5rjp",
+      "message": "Started container payments-api (restart #1)",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:40:37Z",
+      "type": "Warning",
+      "reason": "OOMKilling",
+      "object": "pod/payments-api-7d9f8b6c4b-q9tlc",
+      "message": "Memory cgroup out of memory: Killed process (node) total-vm:3612044kB, anon-rss:2089344kB, limit 2048Mi",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:40:39Z",
+      "type": "Warning",
+      "reason": "BackOff",
+      "object": "pod/payments-api-7d9f8b6c4b-q9tlc",
+      "message": "Back-off restarting failed container payments-api",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:40:43Z",
+      "type": "Normal",
+      "reason": "Started",
+      "object": "pod/payments-api-7d9f8b6c4b-q9tlc",
+      "message": "Started container payments-api (restart #1)",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:44:20Z",
+      "type": "Warning",
+      "reason": "OOMKilling",
+      "object": "pod/payments-api-7d9f8b6c4b-8vn4t",
+      "message": "Memory cgroup out of memory: Killed process (node) total-vm:3612044kB, anon-rss:2089344kB, limit 2048Mi",
+      "count": 1
+    },
+    {
+      "timestamp": "2026-03-11T14:44:22Z",
+      "type": "Warning",
+      "reason": "BackOff",
+      "object": "pod/payments-api-7d9f8b6c4b-8vn4t",
+      "message": "Back-off restarting failed container payments-api",
+      "count": 2
+    },
+    {
+      "timestamp": "2026-03-11T14:44:26Z",
+      "type": "Normal",
+      "reason": "Started",
+      "object": "pod/payments-api-7d9f8b6c4b-8vn4t",
+      "message": "Started container payments-api (restart #2)",
+      "count": 1
+    }
+  ]
+}

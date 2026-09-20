@@ -1,0 +1,56 @@
+2026-03-11T14:30:19Z FATAL [payments-api/payments-api-7d9f8b6c4b-2xkqd] FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+2026-03-11T14:30:20Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:30:21Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:30:22Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:30:22Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:30:23Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] GET /v1/payments/:id 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:30:23Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:30:24Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:33:23Z FATAL [payments-api/payments-api-7d9f8b6c4b-8vn4t] FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+2026-03-11T14:33:24Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:33:25Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:33:26Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:33:26Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:33:27Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] GET /v1/payments/:id 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:33:27Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:33:28Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:35:27Z FATAL [payments-api/payments-api-7d9f8b6c4b-hb7wz] FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+2026-03-11T14:35:28Z ERROR [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:35:29Z ERROR [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:35:30Z ERROR [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:35:30Z ERROR [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:35:31Z ERROR [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/refunds 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:35:31Z ERROR [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:35:32Z ERROR [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:38:45Z FATAL [payments-api/payments-api-7d9f8b6c4b-2xkqd] FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+2026-03-11T14:38:46Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] GET /v1/payments/:id 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:38:47Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:38:48Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] GET /v1/payments/:id 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:38:48Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:38:49Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/refunds 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:38:49Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:38:50Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:39:24Z FATAL [payments-api/payments-api-7d9f8b6c4b-m5rjp] FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+2026-03-11T14:39:25Z ERROR [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:39:26Z ERROR [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:39:27Z ERROR [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:39:27Z ERROR [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:39:28Z ERROR [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:39:28Z ERROR [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:39:29Z ERROR [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:40:37Z FATAL [payments-api/payments-api-7d9f8b6c4b-q9tlc] FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+2026-03-11T14:40:38Z ERROR [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:40:39Z ERROR [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:40:40Z ERROR [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:40:40Z ERROR [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:40:41Z ERROR [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:40:41Z ERROR [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:40:42Z ERROR [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:44:20Z FATAL [payments-api/payments-api-7d9f8b6c4b-8vn4t] FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+2026-03-11T14:44:21Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] GET /v1/payments/:id 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:44:22Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:44:23Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:44:23Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:44:24Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:44:24Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:44:25Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 503 - service unavailable, readiness probe not yet passing

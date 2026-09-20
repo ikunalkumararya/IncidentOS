@@ -1,0 +1,59 @@
+{
+  "service": "payments-api",
+  "deployments": [
+    {
+      "version": "v1.8.1",
+      "deployedAt": "2026-03-11T11:04:00Z",
+      "deployedBy": "ci-bot",
+      "commit": "4a1c9de",
+      "message": "chore(deps): bump fastify to 4.28.1",
+      "status": "superseded",
+      "changedFiles": [
+        "package.json",
+        "pnpm-lock.yaml"
+      ]
+    },
+    {
+      "version": "v1.8.2",
+      "deployedAt": "2026-03-11T12:47:00Z",
+      "deployedBy": "ci-bot",
+      "commit": "b73f0a2",
+      "message": "fix(refunds): correct rounding on partial refunds",
+      "status": "superseded",
+      "changedFiles": [
+        "src/refunds.ts",
+        "tests/refunds.test.ts"
+      ]
+    },
+    {
+      "version": "v1.8.3",
+      "deployedAt": "2026-03-11T14:10:00Z",
+      "deployedBy": "ci-bot",
+      "commit": "9e2d4f7",
+      "message": "feat(metrics): expose /healthz readiness detail",
+      "status": "healthy",
+      "rolloutDurationSeconds": 96,
+      "changedFiles": [
+        "src/health.ts"
+      ],
+      "notes": "Healthy for 11 minutes. No memory or error-rate change."
+    },
+    {
+      "version": "v1.8.4",
+      "deployedAt": "2026-03-11T14:21:00Z",
+      "deployedBy": "ci-bot",
+      "commit": "c41b8ea",
+      "message": "feat(transactions): add rolling aggregation window for settlement batching",
+      "status": "degraded",
+      "rolloutDurationSeconds": 141,
+      "changedFiles": [
+        "src/transactions.ts",
+        "src/aggregation.ts",
+        "tests/transactions.test.ts"
+      ],
+      "notes": "Rolling update completed at 14:23. Memory growth begins on each pod immediately after it picks up this revision."
+    }
+  ],
+  "current": "v1.8.4",
+  "previousStable": "v1.8.3"
+}

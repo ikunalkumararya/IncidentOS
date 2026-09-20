@@ -1,0 +1,27 @@
+{
+  "id": "INC-4821",
+  "number": 4821,
+  "title": "Payment API Degradation",
+  "service": "payments-api",
+  "severity": "SEV-1",
+  "status": "INVESTIGATING",
+  "startedAt": "2026-03-11T14:32:00Z",
+  "declaredAt": "2026-03-11T14:37:00Z",
+  "symptoms": [
+    "HTTP 500 spike",
+    "memory growth",
+    "pod restarts",
+    "elevated payment failures"
+  ],
+  "affectedSystems": [
+    "payments-api",
+    "settlement-worker (downstream)",
+    "checkout-web (upstream)"
+  ],
+  "metrics": {
+    "errorRatePercent": 17.7,
+    "memoryPercent": 92.1,
+    "podsRestarting": 3,
+    "podsTotal": 5
+  }
+}

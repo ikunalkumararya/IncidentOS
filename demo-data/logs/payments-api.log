@@ -1,0 +1,362 @@
+2026-03-11T14:00:03Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/refunds 200 51ms
+2026-03-11T14:00:15Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/payments/capture 200 53ms
+2026-03-11T14:00:23Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/payments 200 59ms
+2026-03-11T14:00:33Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/payments/capture 200 46ms
+2026-03-11T14:00:42Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments/capture 200 44ms
+2026-03-11T14:00:51Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/payments/capture 200 43ms
+2026-03-11T14:01:00Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] GET /v1/payments/:id 200 56ms
+2026-03-11T14:01:15Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/refunds 200 51ms
+2026-03-11T14:01:25Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/payments 200 48ms
+2026-03-11T14:01:32Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] POST /v1/payments 200 43ms
+2026-03-11T14:01:44Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/refunds 200 48ms
+2026-03-11T14:01:55Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] POST /v1/payments/capture 200 45ms
+2026-03-11T14:02:04Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] GET /v1/payments/:id 200 47ms
+2026-03-11T14:02:14Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments/capture 200 67ms
+2026-03-11T14:02:21Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] GET /v1/payments/:id 200 62ms
+2026-03-11T14:02:33Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] GET /v1/payments/:id 200 54ms
+2026-03-11T14:02:43Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] GET /v1/payments/:id 200 64ms
+2026-03-11T14:02:50Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] GET /v1/payments/:id 200 59ms
+2026-03-11T14:03:03Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/payments/capture 200 46ms
+2026-03-11T14:03:10Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/refunds 200 57ms
+2026-03-11T14:03:20Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/refunds 200 47ms
+2026-03-11T14:03:31Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] GET /v1/payments/:id 200 54ms
+2026-03-11T14:03:44Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] GET /v1/payments/:id 200 63ms
+2026-03-11T14:03:53Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments 200 46ms
+2026-03-11T14:04:03Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] GET /v1/payments/:id 200 67ms
+2026-03-11T14:04:13Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments/capture 200 57ms
+2026-03-11T14:04:22Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments 200 66ms
+2026-03-11T14:04:34Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/payments 200 56ms
+2026-03-11T14:04:45Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] GET /v1/payments/:id 200 46ms
+2026-03-11T14:04:51Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/refunds 200 51ms
+2026-03-11T14:05:02Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] POST /v1/payments 200 55ms
+2026-03-11T14:05:13Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] GET /v1/payments/:id 200 43ms
+2026-03-11T14:05:25Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/refunds 200 55ms
+2026-03-11T14:05:31Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/payments 200 53ms
+2026-03-11T14:05:42Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/refunds 200 48ms
+2026-03-11T14:05:53Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/refunds 200 55ms
+2026-03-11T14:06:02Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/payments 200 57ms
+2026-03-11T14:06:14Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] GET /v1/payments/:id 200 47ms
+2026-03-11T14:06:22Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/refunds 200 48ms
+2026-03-11T14:06:31Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/payments/capture 200 61ms
+2026-03-11T14:06:42Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/refunds 200 66ms
+2026-03-11T14:06:55Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] GET /v1/payments/:id 200 64ms
+2026-03-11T14:07:01Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/refunds 200 48ms
+2026-03-11T14:07:15Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] GET /v1/payments/:id 200 58ms
+2026-03-11T14:07:23Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/refunds 200 43ms
+2026-03-11T14:07:35Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/refunds 200 66ms
+2026-03-11T14:07:40Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/payments/capture 200 64ms
+2026-03-11T14:07:50Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/payments/capture 200 45ms
+2026-03-11T14:08:02Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/payments/capture 200 46ms
+2026-03-11T14:08:15Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] POST /v1/payments/capture 200 61ms
+2026-03-11T14:08:24Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] GET /v1/payments/:id 200 60ms
+2026-03-11T14:08:33Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] GET /v1/payments/:id 200 61ms
+2026-03-11T14:08:40Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments 200 44ms
+2026-03-11T14:08:50Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] GET /v1/payments/:id 200 60ms
+2026-03-11T14:09:01Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/refunds 200 47ms
+2026-03-11T14:09:11Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] GET /v1/payments/:id 200 58ms
+2026-03-11T14:09:23Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] POST /v1/refunds 200 67ms
+2026-03-11T14:09:32Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/payments 200 61ms
+2026-03-11T14:09:42Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments/capture 200 57ms
+2026-03-11T14:09:50Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] GET /v1/payments/:id 200 62ms
+2026-03-11T14:10:00Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/payments 200 52ms
+2026-03-11T14:10:13Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments 200 42ms
+2026-03-11T14:10:21Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/refunds 200 65ms
+2026-03-11T14:10:33Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] POST /v1/payments/capture 200 65ms
+2026-03-11T14:10:44Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] POST /v1/payments/capture 200 48ms
+2026-03-11T14:10:51Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/payments 200 59ms
+2026-03-11T14:11:02Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] GET /v1/payments/:id 200 53ms
+2026-03-11T14:11:15Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/refunds 200 54ms
+2026-03-11T14:11:23Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/payments 200 51ms
+2026-03-11T14:11:32Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments 200 47ms
+2026-03-11T14:11:44Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments/capture 200 54ms
+2026-03-11T14:11:50Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/payments 200 62ms
+2026-03-11T14:12:01Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/payments 200 49ms
+2026-03-11T14:12:11Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] GET /v1/payments/:id 200 64ms
+2026-03-11T14:12:25Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/payments 200 53ms
+2026-03-11T14:12:35Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments/capture 200 56ms
+2026-03-11T14:12:43Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] POST /v1/refunds 200 49ms
+2026-03-11T14:12:52Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments/capture 200 49ms
+2026-03-11T14:13:02Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments 200 62ms
+2026-03-11T14:13:10Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/payments/capture 200 49ms
+2026-03-11T14:13:25Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] POST /v1/refunds 200 43ms
+2026-03-11T14:13:31Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] GET /v1/payments/:id 200 44ms
+2026-03-11T14:13:44Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/refunds 200 66ms
+2026-03-11T14:13:51Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] GET /v1/payments/:id 200 52ms
+2026-03-11T14:14:00Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/refunds 200 58ms
+2026-03-11T14:14:12Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] GET /v1/payments/:id 200 52ms
+2026-03-11T14:14:21Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] GET /v1/payments/:id 200 42ms
+2026-03-11T14:14:35Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] GET /v1/payments/:id 200 57ms
+2026-03-11T14:14:40Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/refunds 200 44ms
+2026-03-11T14:14:54Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] POST /v1/refunds 200 44ms
+2026-03-11T14:15:01Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments/capture 200 65ms
+2026-03-11T14:15:13Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/payments/capture 200 60ms
+2026-03-11T14:15:25Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments/capture 200 59ms
+2026-03-11T14:15:33Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/payments 200 42ms
+2026-03-11T14:15:42Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/payments 200 59ms
+2026-03-11T14:15:54Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/payments 200 59ms
+2026-03-11T14:16:04Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/payments 200 62ms
+2026-03-11T14:16:14Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] GET /v1/payments/:id 200 65ms
+2026-03-11T14:16:25Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] GET /v1/payments/:id 200 43ms
+2026-03-11T14:16:34Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] GET /v1/payments/:id 200 57ms
+2026-03-11T14:16:40Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] GET /v1/payments/:id 200 45ms
+2026-03-11T14:16:50Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] POST /v1/payments/capture 200 54ms
+2026-03-11T14:17:01Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/refunds 200 48ms
+2026-03-11T14:17:13Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/payments 200 57ms
+2026-03-11T14:17:24Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] GET /v1/payments/:id 200 59ms
+2026-03-11T14:17:34Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/payments 200 43ms
+2026-03-11T14:17:42Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/payments/capture 200 65ms
+2026-03-11T14:17:50Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] GET /v1/payments/:id 200 56ms
+2026-03-11T14:18:03Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/payments/capture 200 62ms
+2026-03-11T14:18:12Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/payments/capture 200 56ms
+2026-03-11T14:18:25Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/payments/capture 200 50ms
+2026-03-11T14:18:33Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] POST /v1/refunds 200 43ms
+2026-03-11T14:18:42Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments 200 59ms
+2026-03-11T14:18:52Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] GET /v1/payments/:id 200 55ms
+2026-03-11T14:19:02Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] GET /v1/payments/:id 200 67ms
+2026-03-11T14:19:10Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] GET /v1/payments/:id 200 52ms
+2026-03-11T14:19:23Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/refunds 200 65ms
+2026-03-11T14:19:32Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] GET /v1/payments/:id 200 56ms
+2026-03-11T14:19:44Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/refunds 200 50ms
+2026-03-11T14:19:53Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/refunds 200 51ms
+2026-03-11T14:20:01Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments 200 55ms
+2026-03-11T14:20:10Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments/capture 200 45ms
+2026-03-11T14:20:23Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] GET /v1/payments/:id 200 64ms
+2026-03-11T14:20:34Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/refunds 200 65ms
+2026-03-11T14:20:40Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/payments/capture 200 50ms
+2026-03-11T14:20:52Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] POST /v1/refunds 200 49ms
+2026-03-11T14:21:02Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/refunds 200 59ms
+2026-03-11T14:21:06Z INFO  [payments-api] deploy: rolling update to v1.8.4 started (commit c41b8ea)
+2026-03-11T14:21:14Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] GET /v1/payments/:id 200 49ms
+2026-03-11T14:21:23Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] POST /v1/refunds 200 45ms
+2026-03-11T14:21:32Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] GET /v1/payments/:id 200 65ms
+2026-03-11T14:21:41Z INFO  [payments-api/payments-api-6c8b94d7f9-t8grm] POST /v1/refunds 200 54ms
+2026-03-11T14:21:54Z INFO  [payments-api/payments-api-6c8b94d7f9-z6hbp] GET /v1/payments/:id 200 58ms
+2026-03-11T14:22:01Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/payments/capture 200 47ms
+2026-03-11T14:22:11Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/payments 200 50ms
+2026-03-11T14:22:21Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] POST /v1/payments 200 53ms
+2026-03-11T14:22:33Z INFO  [payments-api/payments-api-6c8b94d7f9-c3lky] GET /v1/payments/:id 200 49ms
+2026-03-11T14:22:41Z INFO  [payments-api/payments-api-6c8b94d7f9-wd2fj] POST /v1/payments 200 66ms
+2026-03-11T14:22:50Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] POST /v1/payments/capture 200 53ms
+2026-03-11T14:23:04Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments/capture 200 53ms
+2026-03-11T14:23:15Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 200 64ms
+2026-03-11T14:23:22Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 200 61ms
+2026-03-11T14:23:32Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] GET /v1/payments/:id 200 56ms
+2026-03-11T14:23:33Z INFO  [payments-api] deploy: rolling update to v1.8.4 complete, 5/5 pods on revision 47
+2026-03-11T14:23:43Z INFO  [payments-api/payments-api-6c8b94d7f9-nq4xv] GET /v1/payments/:id 200 50ms
+2026-03-11T14:23:51Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments/capture 200 57ms
+2026-03-11T14:24:03Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 200 44ms
+2026-03-11T14:24:11Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments/capture 200 47ms
+2026-03-11T14:24:21Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments/capture 200 60ms
+2026-03-11T14:24:33Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/refunds 200 64ms
+2026-03-11T14:24:40Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] GET /v1/payments/:id 200 62ms
+2026-03-11T14:24:53Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments/capture 200 51ms
+2026-03-11T14:25:04Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] GET /v1/payments/:id 200 59ms
+2026-03-11T14:25:12Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] GET /v1/payments/:id 200 59ms
+2026-03-11T14:25:23Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 200 44ms
+2026-03-11T14:25:30Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] GET /v1/payments/:id 200 51ms
+2026-03-11T14:25:43Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments/capture 200 50ms
+2026-03-11T14:25:53Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 200 61ms
+2026-03-11T14:26:05Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments/capture 200 43ms
+2026-03-11T14:26:10Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] GET /v1/payments/:id 200 52ms
+2026-03-11T14:26:24Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments/capture 200 66ms
+2026-03-11T14:26:33Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/refunds 200 62ms
+2026-03-11T14:26:42Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] GET /v1/payments/:id 200 59ms
+2026-03-11T14:26:51Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] GET /v1/payments/:id 200 48ms
+2026-03-11T14:26:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] db: pool in_use=20 idle=20 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:27:02Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 200 61ms
+2026-03-11T14:27:11Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 200 58ms
+2026-03-11T14:27:23Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 200 47ms
+2026-03-11T14:27:30Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 200 49ms
+2026-03-11T14:27:44Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] GET /v1/payments/:id 200 60ms
+2026-03-11T14:27:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] db: pool in_use=21 idle=19 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:27:53Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/refunds 200 61ms
+2026-03-11T14:28:04Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] GET /v1/payments/:id 200 62ms
+2026-03-11T14:28:14Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] GET /v1/payments/:id 200 57ms
+2026-03-11T14:28:20Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments/capture 200 61ms
+2026-03-11T14:28:31Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/refunds 200 65ms
+2026-03-11T14:28:43Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 200 43ms
+2026-03-11T14:28:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] db: pool in_use=23 idle=17 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:28:53Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] GET /v1/payments/:id 200 46ms
+2026-03-11T14:29:04Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/refunds 200 47ms
+2026-03-11T14:29:15Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/refunds 200 56ms
+2026-03-11T14:29:22Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/refunds 200 42ms
+2026-03-11T14:29:32Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 200 65ms
+2026-03-11T14:29:41Z WARN  [payments-api/payments-api-7d9f8b6c4b-2xkqd] gc: major collection took 206ms, heap 1.40GB retained after collection
+2026-03-11T14:29:42Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 200 49ms
+2026-03-11T14:29:50Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] GET /v1/payments/:id 200 54ms
+2026-03-11T14:29:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] db: pool in_use=25 idle=15 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:30:04Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 200 64ms
+2026-03-11T14:30:15Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/refunds 200 57ms
+2026-03-11T14:30:19Z FATAL [payments-api/payments-api-7d9f8b6c4b-2xkqd] FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+2026-03-11T14:30:20Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:30:21Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] GET /v1/payments/:id 200 57ms
+2026-03-11T14:30:21Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:30:22Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:30:22Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:30:23Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] GET /v1/payments/:id 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:30:23Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:30:24Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:30:31Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 200 61ms
+2026-03-11T14:30:41Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 200 61ms
+2026-03-11T14:30:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] db: pool in_use=23 idle=17 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:30:53Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 200 44ms
+2026-03-11T14:31:03Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 200 57ms
+2026-03-11T14:31:11Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 200 57ms
+2026-03-11T14:31:20Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 200 46ms
+2026-03-11T14:31:33Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments/capture 200 59ms
+2026-03-11T14:31:40Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 200 66ms
+2026-03-11T14:31:41Z WARN  [payments-api/payments-api-7d9f8b6c4b-hb7wz] gc: major collection took 187ms, heap 1.37GB retained after collection
+2026-03-11T14:31:50Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/refunds 200 61ms
+2026-03-11T14:31:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] db: pool in_use=24 idle=16 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:32:02Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 200 45ms
+2026-03-11T14:32:12Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] GET /v1/payments/:id 200 63ms
+2026-03-11T14:32:21Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments/capture 200 62ms
+2026-03-11T14:32:35Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 200 61ms
+2026-03-11T14:32:41Z WARN  [payments-api/payments-api-7d9f8b6c4b-q9tlc] gc: major collection took 246ms, heap 1.47GB retained after collection
+2026-03-11T14:32:42Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 200 43ms
+2026-03-11T14:32:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] db: pool in_use=26 idle=14 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:32:53Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments/capture 200 47ms
+2026-03-11T14:33:05Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/refunds 200 56ms
+2026-03-11T14:33:10Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 200 63ms
+2026-03-11T14:33:21Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments/capture 200 45ms
+2026-03-11T14:33:23Z FATAL [payments-api/payments-api-7d9f8b6c4b-8vn4t] FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+2026-03-11T14:33:24Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:33:25Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:33:26Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:33:26Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:33:27Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] GET /v1/payments/:id 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:33:27Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:33:28Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:33:32Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] GET /v1/payments/:id 200 53ms
+2026-03-11T14:33:42Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments/capture 200 46ms
+2026-03-11T14:33:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] db: pool in_use=23 idle=17 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:33:53Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 200 66ms
+2026-03-11T14:34:02Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] GET /v1/payments/:id 200 59ms
+2026-03-11T14:34:12Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments/capture 200 54ms
+2026-03-11T14:34:24Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] GET /v1/payments/:id 200 54ms
+2026-03-11T14:34:34Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] GET /v1/payments/:id 200 62ms
+2026-03-11T14:34:41Z WARN  [payments-api/payments-api-7d9f8b6c4b-hb7wz] gc: major collection took 221ms, heap 1.43GB retained after collection
+2026-03-11T14:34:42Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/refunds 200 52ms
+2026-03-11T14:34:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] db: pool in_use=25 idle=15 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:34:53Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 200 55ms
+2026-03-11T14:35:04Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] GET /v1/payments/:id 200 52ms
+2026-03-11T14:35:11Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 200 56ms
+2026-03-11T14:35:25Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 200 57ms
+2026-03-11T14:35:27Z FATAL [payments-api/payments-api-7d9f8b6c4b-hb7wz] FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+2026-03-11T14:35:28Z ERROR [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:35:29Z ERROR [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:35:30Z ERROR [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:35:30Z ERROR [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:35:31Z ERROR [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/refunds 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:35:31Z ERROR [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:35:32Z ERROR [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:35:33Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/refunds 200 57ms
+2026-03-11T14:35:43Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments/capture 200 50ms
+2026-03-11T14:35:50Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 200 47ms
+2026-03-11T14:35:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] db: pool in_use=23 idle=17 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:36:03Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] GET /v1/payments/:id 200 49ms
+2026-03-11T14:36:12Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/refunds 200 46ms
+2026-03-11T14:36:24Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 200 66ms
+2026-03-11T14:36:34Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/refunds 200 57ms
+2026-03-11T14:36:41Z WARN  [payments-api/payments-api-7d9f8b6c4b-q9tlc] gc: major collection took 205ms, heap 1.40GB retained after collection
+2026-03-11T14:36:44Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 200 63ms
+2026-03-11T14:36:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] db: pool in_use=25 idle=15 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:36:53Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 200 56ms
+2026-03-11T14:37:05Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments/capture 200 55ms
+2026-03-11T14:37:15Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] GET /v1/payments/:id 200 54ms
+2026-03-11T14:37:23Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/refunds 200 53ms
+2026-03-11T14:37:30Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] GET /v1/payments/:id 200 63ms
+2026-03-11T14:37:41Z WARN  [payments-api/payments-api-7d9f8b6c4b-q9tlc] gc: major collection took 264ms, heap 1.50GB retained after collection
+2026-03-11T14:37:43Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments/capture 200 58ms
+2026-03-11T14:37:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] GET /v1/payments/:id 200 53ms
+2026-03-11T14:37:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] db: pool in_use=26 idle=14 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:38:01Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] GET /v1/payments/:id 200 51ms
+2026-03-11T14:38:14Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] GET /v1/payments/:id 200 58ms
+2026-03-11T14:38:24Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] GET /v1/payments/:id 200 65ms
+2026-03-11T14:38:30Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments/capture 200 47ms
+2026-03-11T14:38:41Z WARN  [payments-api/payments-api-7d9f8b6c4b-8vn4t] gc: major collection took 185ms, heap 1.37GB retained after collection
+2026-03-11T14:38:45Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 200 50ms
+2026-03-11T14:38:45Z FATAL [payments-api/payments-api-7d9f8b6c4b-2xkqd] FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+2026-03-11T14:38:46Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] GET /v1/payments/:id 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:38:47Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:38:48Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] GET /v1/payments/:id 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:38:48Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:38:49Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/refunds 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:38:49Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:38:50Z ERROR [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:38:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] db: pool in_use=24 idle=16 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:38:54Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] GET /v1/payments/:id 200 62ms
+2026-03-11T14:39:04Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] GET /v1/payments/:id 200 60ms
+2026-03-11T14:39:13Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] GET /v1/payments/:id 200 66ms
+2026-03-11T14:39:24Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments/capture 200 58ms
+2026-03-11T14:39:24Z FATAL [payments-api/payments-api-7d9f8b6c4b-m5rjp] FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+2026-03-11T14:39:25Z ERROR [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:39:26Z ERROR [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:39:27Z ERROR [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:39:27Z ERROR [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:39:28Z ERROR [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:39:28Z ERROR [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:39:29Z ERROR [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:39:33Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] GET /v1/payments/:id 200 51ms
+2026-03-11T14:39:42Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] GET /v1/payments/:id 200 51ms
+2026-03-11T14:39:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] db: pool in_use=22 idle=18 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:39:55Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/refunds 200 57ms
+2026-03-11T14:40:04Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 200 66ms
+2026-03-11T14:40:13Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments/capture 200 56ms
+2026-03-11T14:40:23Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments/capture 200 66ms
+2026-03-11T14:40:34Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 200 48ms
+2026-03-11T14:40:37Z FATAL [payments-api/payments-api-7d9f8b6c4b-q9tlc] FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+2026-03-11T14:40:38Z ERROR [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:40:39Z ERROR [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:40:40Z ERROR [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:40:40Z ERROR [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:40:41Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments/capture 200 54ms
+2026-03-11T14:40:41Z ERROR [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:40:41Z ERROR [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:40:42Z ERROR [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:40:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] db: pool in_use=19 idle=21 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:40:54Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 200 42ms
+2026-03-11T14:41:05Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 200 48ms
+2026-03-11T14:41:13Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] GET /v1/payments/:id 200 46ms
+2026-03-11T14:41:23Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] GET /v1/payments/:id 200 43ms
+2026-03-11T14:41:35Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/refunds 200 63ms
+2026-03-11T14:41:43Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 200 59ms
+2026-03-11T14:41:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] db: pool in_use=21 idle=19 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:41:54Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments/capture 200 50ms
+2026-03-11T14:42:00Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/refunds 200 54ms
+2026-03-11T14:42:11Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 200 60ms
+2026-03-11T14:42:24Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments 200 63ms
+2026-03-11T14:42:33Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments/capture 200 54ms
+2026-03-11T14:42:44Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] GET /v1/payments/:id 200 49ms
+2026-03-11T14:42:50Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/refunds 200 48ms
+2026-03-11T14:42:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] db: pool in_use=23 idle=17 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:43:03Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 200 52ms
+2026-03-11T14:43:15Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/refunds 200 52ms
+2026-03-11T14:43:22Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] GET /v1/payments/:id 200 55ms
+2026-03-11T14:43:33Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] POST /v1/payments 200 49ms
+2026-03-11T14:43:41Z WARN  [payments-api/payments-api-7d9f8b6c4b-8vn4t] gc: major collection took 196ms, heap 1.39GB retained after collection
+2026-03-11T14:43:44Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments/capture 200 43ms
+2026-03-11T14:43:50Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] GET /v1/payments/:id 200 58ms
+2026-03-11T14:43:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] db: pool in_use=24 idle=16 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:44:01Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] GET /v1/payments/:id 200 47ms
+2026-03-11T14:44:14Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] GET /v1/payments/:id 200 45ms
+2026-03-11T14:44:20Z FATAL [payments-api/payments-api-7d9f8b6c4b-8vn4t] FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
+2026-03-11T14:44:21Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] GET /v1/payments/:id 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:44:22Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:44:23Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments/capture 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:44:23Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:44:24Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/refunds 500 - upstream connection reset during request (pod terminating)
+2026-03-11T14:44:24Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:44:25Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/payments/capture 200 63ms
+2026-03-11T14:44:25Z ERROR [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 503 - service unavailable, readiness probe not yet passing
+2026-03-11T14:44:33Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 200 54ms
+2026-03-11T14:44:45Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] GET /v1/payments/:id 200 57ms
+2026-03-11T14:44:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] db: pool in_use=22 idle=18 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:44:53Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] GET /v1/payments/:id 200 46ms
+2026-03-11T14:45:03Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/payments/capture 200 51ms
+2026-03-11T14:45:10Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 200 67ms
+2026-03-11T14:45:22Z INFO  [payments-api/payments-api-7d9f8b6c4b-q9tlc] POST /v1/refunds 200 66ms
+2026-03-11T14:45:34Z INFO  [payments-api/payments-api-7d9f8b6c4b-2xkqd] POST /v1/payments 200 59ms
+2026-03-11T14:45:43Z INFO  [payments-api/payments-api-7d9f8b6c4b-8vn4t] POST /v1/payments 200 54ms
+2026-03-11T14:45:52Z INFO  [payments-api/payments-api-7d9f8b6c4b-hb7wz] db: pool in_use=24 idle=16 max=40 wait_queue=0 acquire_p99=7ms
+2026-03-11T14:45:55Z INFO  [payments-api/payments-api-7d9f8b6c4b-m5rjp] POST /v1/refunds 200 50ms

@@ -1,0 +1,45 @@
+{
+  "namespace": "payments",
+  "deployments": [
+    {
+      "name": "payments-api",
+      "replicas": {
+        "desired": 5,
+        "ready": 4,
+        "available": 4,
+        "updated": 5
+      },
+      "image": "registry.internal/payments-api:v1.8.4",
+      "revision": 47,
+      "strategy": "RollingUpdate",
+      "conditions": [
+        {
+          "type": "Progressing",
+          "status": "True",
+          "reason": "NewReplicaSetAvailable",
+          "lastTransitionAt": "2026-03-11T14:23:31Z"
+        },
+        {
+          "type": "Available",
+          "status": "False",
+          "reason": "MinimumReplicasUnavailable",
+          "lastTransitionAt": "2026-03-11T14:36:02Z"
+        }
+      ],
+      "replicaSets": [
+        {
+          "name": "payments-api-6c8b94d7f9",
+          "revision": 46,
+          "image": "registry.internal/payments-api:v1.8.3",
+          "replicas": 0
+        },
+        {
+          "name": "payments-api-7d9f8b6c4b",
+          "revision": 47,
+          "image": "registry.internal/payments-api:v1.8.4",
+          "replicas": 5
+        }
+      ]
+    }
+  ]
+}
