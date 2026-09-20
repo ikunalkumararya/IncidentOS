@@ -7,6 +7,25 @@
  * as a series colour.
  */
 @theme {
+  /*
+   * Two surfaces, deliberately. The marketing page is a warm ivory canvas with
+   * a serif voice; the console is the dark operational surface. The series and
+   * status colours are shared, so a chart means the same thing in both.
+   */
+  --color-canvas: #faf9f7;
+  --color-canvas-sunk: #f2f0ea;
+  --color-card: #ffffff;
+
+  --color-ink-dark: #191917;
+  --color-ink-dark-secondary: #56544d;
+  --color-ink-dark-muted: #8a887f;
+  --color-rule: rgba(25, 25, 23, 0.11);
+  --color-rule-strong: rgba(25, 25, 23, 0.2);
+
+  /* Clay — used for marks, rules and button fills, never for small body text. */
+  --color-clay: #c96442;
+  --color-clay-deep: #9d4526;
+
   --color-plane: #0a0a0a;
   --color-surface: #101010;
   --color-inset: #17171b;
@@ -36,18 +55,53 @@
   --color-status-critical: #d03b3b;
 
   --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 }
 
 html {
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 body {
-  background: var(--color-plane);
-  color: var(--color-ink);
+  background: var(--color-canvas);
+  color: var(--color-ink-dark);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * The dark operational surface. `dark-panel` is the treatment on its own, for
+ * a card embedded in the light page; `surface-dark` adds the full-height fill
+ * that a whole route needs. Keep the min-height out of the panel — on a card
+ * it silently stretches to the viewport.
+ */
+.dark-panel {
+  color-scheme: dark;
+  background: var(--color-plane);
+  color: var(--color-ink);
+}
+
+.surface-dark {
+  color-scheme: dark;
+  background: var(--color-plane);
+  color: var(--color-ink);
+  min-height: 100vh;
+}
+
+.display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.021em;
+  line-height: 1.06;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--color-ink-dark-muted);
 }
 
 /* A single shared card treatment keeps every panel on the same grid. */
@@ -101,9 +155,42 @@ body {
   scrollbar-color: var(--color-baseline) transparent;
 }
 
+/* Scroll-in reveal, driven by an IntersectionObserver setting data-shown. */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal[data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes caret {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.caret {
+  animation: caret 1s step-end infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pulsing,
-  .enter {
+  .enter,
+  .caret {
     animation: none;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
