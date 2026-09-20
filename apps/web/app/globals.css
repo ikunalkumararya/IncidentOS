@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+/*
+ * A dark-only console. The two series colours are the validated categorical
+ * blue and red stepped for a dark surface; chrome and ink follow the same
+ * reference palette. Status colours are reserved for state and never reused
+ * as a series colour.
+ */
+@theme {
+  --color-plane: #0a0a0a;
+  --color-surface: #101010;
+  --color-inset: #17171b;
+
+  --color-ink: #ffffff;
+  --color-ink-secondary: #c3c2b7;
+  --color-ink-muted: #898781;
+
+  --color-hairline: rgba(255, 255, 255, 0.1);
+  --color-gridline: #2c2c2a;
+  --color-baseline: #383835;
+
+  --color-series-memory: #3987e5;
+  --color-series-errors: #e66767;
+
+  --color-status-good: #0ca30c;
+  --color-status-warning: #fab219;
+  --color-status-serious: #ec835a;
+  --color-status-critical: #d03b3b;
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-plane);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* A single shared card treatment keeps every panel on the same grid. */
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+  border-radius: 10px;
+}
+
+.panel-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes pulse-ring {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.pulsing {
+  animation: pulse-ring 1.4s ease-in-out infinite;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.enter {
+  animation: slide-in 0.22s ease-out both;
+}
+
+.scroll-area {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-baseline) transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulsing,
+  .enter {
+    animation: none;
+  }
+}
