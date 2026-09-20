@@ -2,6 +2,15 @@
 
 import { API_BASE } from "./useInvestigation";
 
+/**
+ * The account the server seeds on first boot. Defaults match DEMO_USER_* in
+ * .env.example; override both sides together if you change them.
+ */
+export const DEMO_CREDENTIALS = {
+  email: process.env.NEXT_PUBLIC_DEMO_EMAIL || "demo@incidentos.dev",
+  password: process.env.NEXT_PUBLIC_DEMO_PASSWORD || "incident123",
+};
+
 export interface AuthUser {
   id: string;
   email: string;
