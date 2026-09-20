@@ -1,7 +1,6 @@
 import { readdir, readFile as read, stat } from "node:fs/promises";
 import { relative } from "node:path";
 import { z } from "zod";
-import { SANDBOX_REPO } from "../config.js";
 import { resolveInSandbox } from "../sandbox.js";
 import { defineTool } from "./types.js";
 
@@ -20,8 +19,8 @@ export const readFileTool = defineTool({
     "Read a file from the payments-api repository, with line numbers so you can refer to exact lines. " +
     "Passing a directory lists it instead. Access is confined to the repository.",
   schema,
-  async run(input) {
-    const target = resolveInSandbox(input.path);
+  async run(input, ctx) {
+    const target = resolveInSandbox(input.path, ctx.sandboxRoot);
     const info = await stat(target);
 
     if (info.isDirectory()) {
@@ -31,7 +30,7 @@ export const readFileTool = defineTool({
         .map((e) => (e.isDirectory() ? `${e.name}/` : e.name))
         .sort();
       return {
-        content: `${relative(SANDBOX_REPO, target) || "."} (directory)\n\n${listing.join("\n")}`,
+        content: `${relative(ctx.sandboxRoot, target) || "."} (directory)\n\n${listing.join("\n")}`,
         summary: `listed ${listing.length} entries in ${input.path}`,
       };
     }
@@ -43,8 +42,8 @@ export const readFileTool = defineTool({
       .join("\n");
 
     return {
-      content: `${relative(SANDBOX_REPO, target)}\n\n${numbered}`,
-      summary: `read ${relative(SANDBOX_REPO, target)} (${text.split("\n").length} lines)`,
+      content: `${relative(ctx.sandboxRoot, target)}\n\n${numbered}`,
+      summary: `read ${relative(ctx.sandboxRoot, target)} (${text.split("\n").length} lines)`,
     };
   },
 });

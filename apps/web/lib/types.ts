@@ -3,7 +3,7 @@
  * they are erased at build time and the web app takes on no runtime dependency
  * on the server package — but the two can never drift apart.
  */
-export type { InvestigationEvent, Phase, TimedEvent } from "@server/events";
+export type { InvestigationEvent, Phase, TimedEvent, AttackSimResult } from "@server/events";
 export type { Incident } from "@server/incidents/index";
 export type { TimelineMarker, TimelinePoint } from "@server/timeline";
 export type {
@@ -24,4 +24,6 @@ export interface AttackAnalysis {
   }[];
   sources: import("@server/security/index").AttackSource[];
   events: import("@server/security/index").SecurityEvent[];
+  health: import("@server/security/index").HealthPoint[];
+  healthMarkers: import("@server/security/index").HealthMarker[];
 }

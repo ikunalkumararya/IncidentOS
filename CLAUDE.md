@@ -60,7 +60,7 @@ Per-package typecheck: `pnpm --filter @incident-os/server typecheck` / `pnpm --f
 apps/web/            Next.js dashboard — SSE client + a pure reducer over the event stream
 server/
   src/agent/         system prompts + the phased streaming tool loop (investigator.ts)
-  src/tools/         the 11 tools Claude can call
+  src/tools/         incident (11) and attack (16) tool registries Claude can call
   src/sandbox.ts     working copy management; fixed-argv test/typecheck/memory runners
   src/runner.ts      starts a run, enforces the wall-clock timeout, falls back to a recording
   src/recorder.ts    records live runs, replays recordings in demo mode

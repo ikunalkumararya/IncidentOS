@@ -1,3 +1,4 @@
+import type { TokenRequest } from "../src/auth.js";
 import type { PaymentBody, PaymentRequest } from "../src/types.js";
 
 let counter = 0;
@@ -35,4 +36,26 @@ export function makePaymentRequest(overrides: Partial<PaymentBody> = {}): Paymen
 
 export function resetRequestCounter(): void {
   counter = 0;
+}
+
+let authCounter = 0;
+const AUTH_BASE_RECEIVED_AT = 1_741_703_100_000;
+
+/**
+ * Builds a token request against a known-good account by default, with a
+ * monotonically increasing `receivedAt` so successive calls in a test never
+ * collide on the same millisecond.
+ */
+export function makeTokenRequest(overrides: Partial<TokenRequest> = {}): TokenRequest {
+  return {
+    account: "ops-runner@northwind.example",
+    password: "Trellis-Cobalt-42",
+    remoteAddress: "10.42.11.7",
+    receivedAt: AUTH_BASE_RECEIVED_AT + authCounter++,
+    ...overrides,
+  };
+}
+
+export function resetAuthCounter(): void {
+  authCounter = 0;
 }

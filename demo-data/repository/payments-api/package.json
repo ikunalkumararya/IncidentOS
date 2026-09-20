@@ -7,6 +7,7 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "memory-sim": "node --expose-gc --import tsx scripts/memory-sim.ts"
+    "memory-sim": "node --expose-gc --import tsx scripts/memory-sim.ts",
+    "attack-sim": "node --import tsx scripts/attack-sim.ts"
   }
 }
