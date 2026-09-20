@@ -6,7 +6,7 @@ import { useState } from "react";
 import { AuthShell } from "@/components/auth/AuthShell";
 import { Field } from "@/components/auth/Field";
 import { Notice, SubmitButton } from "@/components/auth/shared";
-import { AuthError, signIn } from "@/lib/auth";
+import { AuthError, DEMO_CREDENTIALS, signIn } from "@/lib/auth";
 import { useValidatedForm } from "@/lib/useValidatedForm";
 import { validateEmail, validatePassword } from "@/lib/validation";
 
@@ -20,14 +20,12 @@ export default function SignInPage() {
     password: validatePassword(v.password),
   }));
 
-  async function onSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    if (!form.submit()) return;
-
+  /** Shared by the form and the demo button, so both land the same way. */
+  async function authenticate(email: string, password: string) {
     setNotice(null);
     setPending(true);
     try {
-      await signIn(form.values.email, form.values.password);
+      await signIn(email, password);
       // Read straight off the URL rather than useSearchParams, which would
       // need a Suspense boundary here for no benefit. Only same-site paths
       // are honoured, so ?next= cannot be used as an open redirect.
@@ -44,6 +42,26 @@ export default function SignInPage() {
       setNotice(message);
       setPending(false);
     }
+  }
+
+  async function onSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    if (!form.submit()) return;
+    await authenticate(form.values.email, form.values.password);
+  }
+
+  /**
+   * Fills the fields and signs in, so the credentials are visible rather than
+   * happening invisibly — someone watching the demo should see what was used.
+   *
+   * The constants are passed to authenticate directly rather than read back
+   * from form.values, which is still the previous render's state at this
+   * point.
+   */
+  async function onUseDemoAccount() {
+    form.set("email")(DEMO_CREDENTIALS.email);
+    form.set("password")(DEMO_CREDENTIALS.password);
+    await authenticate(DEMO_CREDENTIALS.email, DEMO_CREDENTIALS.password);
   }
 
   return (
@@ -99,10 +117,20 @@ export default function SignInPage() {
 
         <SubmitButton pending={pending}>{pending ? "Signing in…" : "Sign in"}</SubmitButton>
 
-        <p className="text-center text-[12.5px] text-[var(--color-ink-dark-muted)]">
-          Demo account: <span className="font-mono">demo@incidentos.dev</span> /{" "}
-          <span className="font-mono">incident123</span>
-        </p>
+        <div className="space-y-2 rounded-md border border-dashed border-[var(--color-rule-strong)] p-3">
+          <button
+            type="button"
+            onClick={onUseDemoAccount}
+            disabled={pending}
+            className="w-full rounded-md border border-[var(--color-rule-strong)] bg-[var(--color-card)] px-4 py-2 text-[13.5px] font-medium transition hover:bg-[var(--color-canvas-sunk)] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            Use the demo account
+          </button>
+          <p className="text-center text-[12px] text-[var(--color-ink-dark-muted)]">
+            <span className="font-mono">{DEMO_CREDENTIALS.email}</span> /{" "}
+            <span className="font-mono">{DEMO_CREDENTIALS.password}</span>
+          </p>
+        </div>
       </form>
     </AuthShell>
   );
