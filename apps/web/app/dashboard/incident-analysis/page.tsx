@@ -2,7 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { IncidentChart } from "@/components/IncidentChart";
-import { ActivityFeed, Diff, Hypotheses, Panel, Report, Verification } from "@/components/panels";
+import {
+  ActivityFeed,
+  Diff,
+  Hypotheses,
+  Panel,
+  PhaseStepper,
+  Report,
+  RootCauseCard,
+  Verification,
+} from "@/components/panels";
 import type { Incident, TimelineMarker, TimelinePoint } from "@/lib/types";
 import { API_BASE, useInvestigation } from "@/lib/useInvestigation";
 
@@ -38,11 +47,7 @@ export default function IncidentAnalysisPage() {
 
   const running = state.status === "running";
   const resolved = state.status === "resolved";
-  const reachedPhase = (key: string) => {
-    const order = PHASES.findIndex((p) => p.key === state.phase);
-    const mine = PHASES.findIndex((p) => p.key === key);
-    return resolved || (order >= 0 && mine < order);
-  };
+  const reachedIndex = resolved ? PHASES.length : PHASES.findIndex((p) => p.key === state.phase);
 
   return (
     <>
@@ -159,30 +164,7 @@ export default function IncidentAnalysisPage() {
           </button>
 
           {(running || resolved) && (
-            <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs">
-              {PHASES.map((phase, i) => {
-                const active = state.phase === phase.key;
-                const done = reachedPhase(phase.key);
-                return (
-                  <li key={phase.key} className="flex items-center gap-1.5">
-                    {i > 0 && <span className="text-[var(--color-ink-muted)]">›</span>}
-                    <span
-                      className={active ? "pulsing" : ""}
-                      style={{
-                        color: active
-                          ? "var(--color-status-warning)"
-                          : done
-                            ? "var(--color-status-good)"
-                            : "var(--color-ink-muted)",
-                      }}
-                    >
-                      {done ? "✓ " : active ? "◉ " : "○ "}
-                      {phase.label}
-                    </span>
-                  </li>
-                );
-              })}
-            </ol>
+            <PhaseStepper phases={PHASES} current={state.phase} reachedIndex={reachedIndex} />
           )}
 
           {resolved && (
@@ -213,29 +195,7 @@ export default function IncidentAnalysisPage() {
 
           <div className="space-y-5">
             <Panel title="Root cause">
-              {state.rootCause ? (
-                <div className="enter">
-                  <div className="mb-2 flex items-baseline gap-3">
-                    <span
-                      className="text-xs font-semibold uppercase tracking-wide"
-                      style={{ color: "var(--color-status-good)" }}
-                    >
-                      Identified
-                    </span>
-                    <span className="text-xs text-[var(--color-ink-muted)] tabular">
-                      {state.rootCause.confidence}% confidence
-                    </span>
-                  </div>
-                  <p className="text-sm leading-relaxed text-[var(--color-ink-secondary)]">
-                    {state.rootCause.explanation}
-                  </p>
-                </div>
-              ) : (
-                <p className="text-sm text-[var(--color-ink-muted)]">
-                  Not established yet — the agent cannot declare a cause until the evidence supports one
-                  hypothesis and rules out the others.
-                </p>
-              )}
+              <RootCauseCard rootCause={state.rootCause} hypotheses={state.hypotheses} />
             </Panel>
 
             <Panel title="Verification">

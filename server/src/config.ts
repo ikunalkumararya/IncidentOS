@@ -1,6 +1,7 @@
 import { config as loadEnv } from "dotenv";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { RunKind } from "./events.js";
 
 /** Monorepo root — two levels up from server/src. */
 export const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -16,7 +17,9 @@ export const DEMO_REPO = join(DEMO_DATA, "repository", "payments-api");
  * simulation run — a copy under /tmp has no module resolution path.
  */
 export const SANDBOX_ROOT = join(REPO_ROOT, ".sandbox");
-export const SANDBOX_REPO = join(SANDBOX_ROOT, "payments-api");
+
+/** One sandbox per run kind, so a live incident run and a live attack run never share a working copy. */
+export const sandboxRepoFor = (kind: RunKind) => join(SANDBOX_ROOT, kind, "payments-api");
 
 export const RECORDINGS_DIR = join(REPO_ROOT, "recordings");
 export const FALLBACK_RECORDING = join(RECORDINGS_DIR, "fallback.json");
@@ -30,6 +33,14 @@ export const API_KEY = process.env.ANTHROPIC_API_KEY;
  * this elapses the server aborts the agent and finishes from the recording.
  */
 export const INVESTIGATION_TIMEOUT_MS = Number(process.env.INVESTIGATION_TIMEOUT_MS ?? 90_000);
+
+/**
+ * Wall-clock cap for one attack investigation. Longer than the incident's
+ * because the fix phase runs a patch, a type-check, the test suite and two
+ * attack-replay simulations (baseline and post-patch) rather than one memory
+ * measurement.
+ */
+export const ATTACK_TIMEOUT_MS = Number(process.env.ATTACK_TIMEOUT_MS ?? 180_000);
 
 /** Force the recorded stream instead of calling the API. */
 export const FORCE_DEMO_MODE = process.env.DEMO_MODE === "1";

@@ -6,8 +6,10 @@
  * Prints the event stream as it arrives and exits non-zero if the run did not
  * reach a verified fix.
  */
-import { startInvestigation } from "./runner.js";
+import { startRun } from "./runner.js";
 import type { TimedEvent } from "./events.js";
+
+const isAttack = process.argv.includes("--attack");
 
 const DIM = "\x1b[2m";
 const BOLD = "\x1b[1m";
@@ -49,20 +51,26 @@ function render(event: TimedEvent): string {
       return `  ${event.ok ? GREEN + "✓" : RED + "✗"}${RESET} ${event.check} ${DIM}${event.detail}${RESET}`;
     case "memory":
       return `  ${GREEN}✓${RESET} memory ${event.beforeMB} MB → ${event.afterMB} MB ${DIM}(${event.reductionPercent}% less, ${event.beforePerTxn} → ${event.afterPerTxn} B/txn)${RESET}`;
+    case "attack_assessment":
+      return `\n${BOLD}ASSESSMENT [${event.priority}]${RESET} ${DIM}${event.confidence}%${RESET} — ${event.rationale}`;
+    case "code_location":
+      return `\n${BOLD}CODE${RESET} ${event.path}:${event.line} ${event.symbol} ${DIM}— ${event.explanation}${RESET}`;
+    case "attack_sim":
+      return `  ${GREEN}✓${RESET} attack replay ${event.before.sessionsCreated} → ${event.after.sessionsCreated} sessions, ${event.before.credentialsMatched} → ${event.after.credentialsMatched} matched ${DIM}(${event.after.lockedAccounts} accounts locked)${RESET}`;
     case "report":
-      return `\n${BOLD}INCIDENT REPORT${RESET}\n${event.markdown}`;
+      return `\n${BOLD}${isAttack ? "SECURITY REPORT" : "INCIDENT REPORT"}${RESET}\n${event.markdown}`;
     case "demo_mode":
       return `\n${YELLOW}${BOLD}DEMO MODE${RESET} ${event.reason}`;
     case "error":
       return `${RED}${event.fatal ? "FATAL " : ""}${event.message}${RESET}`;
     case "resolved":
-      return `\n${BOLD}${GREEN}INCIDENT RESOLVED${RESET} ${DIM}in ${(event.durationMs / 1000).toFixed(1)}s${RESET}`;
+      return `\n${BOLD}${GREEN}RESOLVED${RESET} ${DIM}in ${(event.durationMs / 1000).toFixed(1)}s${RESET}`;
     default:
       return JSON.stringify(event);
   }
 }
 
-const run = startInvestigation();
+const run = startRun(isAttack ? "attack" : "incident");
 let resolved = false;
 let fatal = false;
 

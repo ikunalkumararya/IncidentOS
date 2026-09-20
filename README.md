@@ -229,8 +229,8 @@ apps/web/
   components/auth/   auth shell, validated field
   lib/useValidatedForm.ts  when a field is allowed to show an error
 server/
-  src/agent/         prompts + the streaming tool loop
-  src/tools/         the 11 tools
+  src/agent/         prompts + the streaming tool loop, per run kind
+  src/tools/         incident (11) and attack (16) tool registries
   src/sandbox.ts     working copy, fixed-argv test/typecheck/memory runners
   src/runner.ts      live run, timeout, fallback to the recording
 demo-data/
@@ -261,5 +261,6 @@ ANTHROPIC_API_KEY=          # required for the live demo
 CLAUDE_MODEL=claude-opus-5
 PORT=4000
 INVESTIGATION_TIMEOUT_MS=90000
+ATTACK_TIMEOUT_MS=180000
 DEMO_MODE=0
 ```

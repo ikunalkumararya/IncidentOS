@@ -105,7 +105,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 }`}
               >
                 <svg aria-hidden="true" className="shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  {tab.href.endsWith("incident-analysis") ? (
+                  {tab.icon === "incident" ? (
                     <><rect x="3" y="3" width="18" height="18" rx="5" /><path d="M6 12h3l2-4 3 8 2-4h2" /></>
                   ) : (
                     <><path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3Z" /><path d="m9 12 2 2 4-4" /></>

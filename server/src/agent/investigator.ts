@@ -1,10 +1,11 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { API_KEY, MAX_ITERATIONS_PER_PHASE, MODEL } from "../config.js";
-import { PHASE_LABELS, type Emit, type Phase } from "../events.js";
+import { API_KEY, sandboxRepoFor } from "../config.js";
+import { PHASE_LABELS, type Emit } from "../events.js";
 import { loadIncident } from "../incidents/index.js";
 import { measureMemory, prepareSandbox } from "../sandbox.js";
-import { executeTool, toolSpecs } from "../tools/index.js";
+import { INCIDENT_REGISTRY } from "../tools/index.js";
 import { emptyFindings, type Findings, type ToolContext } from "../tools/types.js";
+import { createConversation, InvestigationAborted } from "./loop.js";
 import {
   FIX_PROMPT,
   HYPOTHESIS_PROMPT,
@@ -14,14 +15,7 @@ import {
   SYSTEM_PROMPT,
 } from "./prompts.js";
 
-export class InvestigationAborted extends Error {}
-
-interface PhaseOptions {
-  phase: Phase;
-  prompt: string;
-  /** Prevent tool use — used for the final written report. */
-  textOnly?: boolean;
-}
+export { InvestigationAborted };
 
 /**
  * Runs one investigation end to end.
@@ -39,127 +33,39 @@ export async function runInvestigation(emit: Emit, signal: AbortSignal): Promise
 
   const client = new Anthropic({ apiKey: API_KEY, maxRetries: 2 });
   const incident = loadIncident();
-  const findings = emptyFindings();
-  const ctx: ToolContext = { emit, findings };
-  const messages: Anthropic.MessageParam[] = [];
-  const tools = toolSpecs();
+  const findings = emptyFindings("incident");
+  const root = sandboxRepoFor("incident");
+  const ctx: ToolContext = { emit, findings, sandboxRoot: root };
 
   emit({
     type: "started",
     incidentId: incident.id,
     message: `${incident.severity} · ${incident.title} · ${incident.service}`,
+    kind: "incident",
   });
 
   emit({ type: "narration", text: "Checking out a working copy of payments-api…" });
-  await prepareSandbox();
+  await prepareSandbox("incident");
 
   // Baseline memory has to be measured before the agent touches anything.
   // Kick it off now and collect it before the fix phase: it takes a few
   // seconds and there is no reason for the model to wait on it.
-  const baselinePromise = measureMemory().catch(() => null);
+  const baselinePromise = measureMemory(root).catch(() => null);
+
+  const conversation = createConversation({
+    client,
+    systemPrompt: SYSTEM_PROMPT,
+    registry: INCIDENT_REGISTRY,
+    ctx,
+    emit,
+    signal,
+    labels: PHASE_LABELS,
+  });
+  const { runPhase } = conversation;
 
   const throwIfAborted = () => {
     if (signal.aborted) throw new InvestigationAborted("investigation aborted");
   };
-
-  async function runPhase({ phase, prompt, textOnly }: PhaseOptions): Promise<string> {
-    throwIfAborted();
-    emit({ type: "phase", phase, label: PHASE_LABELS[phase] });
-    messages.push({ role: "user", content: prompt });
-
-    let finalText = "";
-
-    for (let iteration = 0; iteration < MAX_ITERATIONS_PER_PHASE; iteration++) {
-      throwIfAborted();
-
-      const stream = client.messages.stream(
-        {
-          model: MODEL,
-          max_tokens: 64_000,
-          thinking: { type: "adaptive", display: "summarized" },
-          output_config: { effort: "high" },
-          system: [
-            {
-              type: "text",
-              text: SYSTEM_PROMPT,
-              cache_control: { type: "ephemeral" },
-            },
-          ],
-          tools,
-          ...(textOnly ? { tool_choice: { type: "none" as const } } : {}),
-          messages,
-        },
-        { signal },
-      );
-
-      // Summarised reasoning is flushed a block at a time rather than per
-      // delta: it keeps the console readable and the recording small, and the
-      // tool calls already carry the moment-to-moment sense of progress.
-      let thinkingBuffer = "";
-      stream.on("thinking", (delta) => {
-        thinkingBuffer += delta;
-      });
-      stream.on("contentBlock", (block) => {
-        if (block.type === "thinking" && thinkingBuffer.trim()) {
-          emit({ type: "thinking", text: thinkingBuffer.trim() });
-          thinkingBuffer = "";
-        }
-      });
-
-      const message = await stream.finalMessage();
-
-      if (message.stop_reason === "refusal") {
-        throw new Error("the model declined to continue this turn");
-      }
-      if (message.stop_reason === "pause_turn") {
-        messages.push({ role: "assistant", content: message.content });
-        continue;
-      }
-
-      const toolUses = message.content.filter(
-        (block): block is Anthropic.ToolUseBlock => block.type === "tool_use",
-      );
-
-      // A tool input truncated at max_tokens usually still parses into a
-      // plausible-looking object, so never run the tools from such a turn.
-      if (message.stop_reason === "max_tokens" && toolUses.length > 0) {
-        throw new Error("tool input was truncated at max_tokens");
-      }
-
-      const text = message.content
-        .filter((block): block is Anthropic.TextBlock => block.type === "text")
-        .map((block) => block.text)
-        .join("\n")
-        .trim();
-      if (text) finalText = text;
-
-      if (toolUses.length === 0) return finalText;
-
-      messages.push({ role: "assistant", content: message.content });
-
-      // Parallel tool calls must come back as tool_result blocks in a single
-      // user message, or the model learns to stop issuing them in parallel.
-      const results: Anthropic.ToolResultBlockParam[] = [];
-      for (const call of toolUses) {
-        emit({ type: "tool_call", tool: call.name, input: call.input });
-        const outcome = await executeTool(call.name, call.input, ctx);
-        emit({ type: "tool_result", tool: call.name, summary: outcome.summary, ok: outcome.ok });
-        results.push({
-          type: "tool_result",
-          tool_use_id: call.id,
-          content: outcome.content,
-          ...(outcome.ok ? {} : { is_error: true }),
-        });
-      }
-      messages.push({ role: "user", content: results });
-    }
-
-    emit({
-      type: "narration",
-      text: `Reached the turn limit for this phase after ${MAX_ITERATIONS_PER_PHASE} steps; moving on.`,
-    });
-    return finalText;
-  }
 
   await runPhase({ phase: "investigate", prompt: incidentBriefing(incident) });
   await runPhase({ phase: "hypothesize", prompt: HYPOTHESIS_PROMPT });
@@ -188,7 +94,7 @@ export async function runInvestigation(emit: Emit, signal: AbortSignal): Promise
 
   if (findings.patches.length && findings.memoryBefore) {
     emit({ type: "narration", text: "Re-running the memory simulation against the patched code…" });
-    const after = await measureMemory().catch(() => null);
+    const after = await measureMemory(root).catch(() => null);
     findings.memoryAfter = after;
 
     if (after) {

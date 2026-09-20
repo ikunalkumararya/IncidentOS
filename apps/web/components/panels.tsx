@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import type { ActivityItem, HypothesisState, InvestigationState } from "@/lib/useInvestigation";
+import type { AttackSimResult } from "@/lib/types";
 
 export function Panel({
   title,
@@ -22,6 +23,123 @@ export function Panel({
       </header>
       {children}
     </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Small pill badges — priority/confidence tags, header status chips    */
+/* ------------------------------------------------------------------ */
+
+const TAG_COLOR: Record<"good" | "warning" | "serious" | "critical" | "neutral", string> = {
+  good: "var(--color-status-good)",
+  warning: "var(--color-status-warning)",
+  serious: "var(--color-status-serious)",
+  critical: "var(--color-status-critical)",
+  neutral: "var(--color-ink-muted)",
+};
+
+export function Tag({
+  tone,
+  children,
+}: {
+  tone: "good" | "warning" | "serious" | "critical" | "neutral";
+  children: React.ReactNode;
+}) {
+  const color = TAG_COLOR[tone];
+  return (
+    <span
+      className="rounded px-2 py-0.5 text-[11px] uppercase tracking-wide"
+      style={{
+        background:
+          tone === "neutral"
+            ? "var(--color-inset)"
+            : `color-mix(in srgb, ${color} 18%, transparent)`,
+        color,
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Phase stepper — investigate → hypothesize → prove → fix → verify →  */
+/* report, shared by the incident and attack pages                     */
+/* ------------------------------------------------------------------ */
+
+export function PhaseStepper({
+  phases,
+  current,
+  reachedIndex,
+}: {
+  phases: readonly { key: string; label: string }[];
+  current: string | null;
+  /** Phases with index < reachedIndex render as done (checked). */
+  reachedIndex: number;
+}) {
+  return (
+    <ol className="flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs">
+      {phases.map((phase, i) => {
+        const active = current === phase.key;
+        const done = reachedIndex >= 0 && i < reachedIndex;
+        return (
+          <li key={phase.key} className="flex items-center gap-1.5">
+            {i > 0 && <span className="text-[var(--color-ink-muted)]">›</span>}
+            <span
+              className={active ? "pulsing" : ""}
+              style={{
+                color: active
+                  ? "var(--color-status-warning)"
+                  : done
+                    ? "var(--color-status-good)"
+                    : "var(--color-ink-muted)",
+              }}
+            >
+              {done ? "✓ " : active ? "◉ " : "○ "}
+              {phase.label}
+            </span>
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Root cause card                                                      */
+/* ------------------------------------------------------------------ */
+
+export function RootCauseCard({
+  rootCause,
+}: {
+  rootCause: { explanation: string; confidence: number; hypothesisId: string } | null;
+  /** Accepted for callers that want to key a re-render off hypothesis changes; not otherwise used here. */
+  hypotheses?: HypothesisState[];
+}) {
+  if (!rootCause) {
+    return (
+      <p className="text-sm text-[var(--color-ink-muted)]">
+        Not established yet — the agent cannot declare a cause until the evidence supports one hypothesis
+        and rules out the others.
+      </p>
+    );
+  }
+
+  return (
+    <div className="enter">
+      <div className="mb-2 flex items-baseline gap-3">
+        <span
+          className="text-xs font-semibold uppercase tracking-wide"
+          style={{ color: "var(--color-status-good)" }}
+        >
+          Identified
+        </span>
+        <span className="text-xs text-[var(--color-ink-muted)] tabular">
+          {rootCause.confidence}% confidence
+        </span>
+      </div>
+      <p className="text-sm leading-relaxed text-[var(--color-ink-secondary)]">{rootCause.explanation}</p>
+    </div>
   );
 }
 
@@ -215,10 +333,17 @@ export function Diff({ diff }: { diff: string }) {
 /* Verification                                                         */
 /* ------------------------------------------------------------------ */
 
-export function Verification({ state }: { state: InvestigationState }) {
+export function Verification({
+  state,
+  attackSim,
+}: {
+  state: InvestigationState;
+  /** Attack runs' before/after replay of the credential-stuffing simulation. */
+  attackSim?: { before: AttackSimResult; after: AttackSimResult } | null;
+}) {
   const { verifications, tests, memory } = state;
 
-  if (!verifications.length && !tests && !memory) {
+  if (!verifications.length && !tests && !memory && !attackSim) {
     return <p className="text-sm text-[var(--color-ink-muted)]">Nothing verified yet.</p>;
   }
 
@@ -284,6 +409,70 @@ export function Verification({ state }: { state: InvestigationState }) {
           </p>
         </div>
       )}
+
+      {attackSim && (
+        <div className="rounded-md bg-[var(--color-inset)] p-3">
+          <p className="mb-2 text-[11px] uppercase tracking-wide text-[var(--color-ink-muted)]">
+            Attack replay · before → after the fix
+          </p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <ReplayStat
+              label="Sessions created"
+              before={attackSim.before.sessionsCreated}
+              after={attackSim.after.sessionsCreated}
+              goodDirection="down"
+            />
+            <ReplayStat
+              label="Credentials matched"
+              before={attackSim.before.credentialsMatched}
+              after={attackSim.after.credentialsMatched}
+              goodDirection="down"
+            />
+            <ReplayStat
+              label="Locked accounts"
+              before={attackSim.before.lockedAccounts}
+              after={attackSim.after.lockedAccounts}
+              goodDirection="up"
+            />
+            <ReplayStat
+              label="Rate limited"
+              before={attackSim.before.rateLimited}
+              after={attackSim.after.rateLimited}
+              goodDirection="up"
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ReplayStat({
+  label,
+  before,
+  after,
+  goodDirection,
+}: {
+  label: string;
+  before: number;
+  after: number;
+  /** Whether the fix should have pushed this number up or down. */
+  goodDirection: "up" | "down";
+}) {
+  const improved = goodDirection === "up" ? after > before : after < before;
+  return (
+    <div>
+      <p className="text-[11px] uppercase tracking-wide text-[var(--color-ink-muted)]">{label}</p>
+      <p className="mt-0.5 flex items-baseline gap-1.5 tabular">
+        <span className="text-[var(--color-ink-muted)]">{before}</span>
+        <span className="text-[var(--color-ink-muted)]">→</span>
+        <span
+          className="text-lg font-semibold"
+          style={{ color: improved ? "var(--color-status-good)" : "var(--color-ink)" }}
+        >
+          {after}
+        </span>
+      </p>
     </div>
   );
 }
