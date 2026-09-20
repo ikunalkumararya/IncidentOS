@@ -1,0 +1,12 @@
+{
+  "name": "payments-api",
+  "version": "1.8.4",
+  "private": true,
+  "type": "module",
+  "description": "Payment capture, settlement batching and refunds.",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "memory-sim": "node --expose-gc --import tsx scripts/memory-sim.ts"
+  }
+}
