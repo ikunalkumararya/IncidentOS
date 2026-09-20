@@ -30,7 +30,7 @@ export default function SignInPage() {
       // need a Suspense boundary here for no benefit. Only same-site paths
       // are honoured, so ?next= cannot be used as an open redirect.
       const requested = new URLSearchParams(window.location.search).get("next");
-      const destination = requested?.startsWith("/") && !requested.startsWith("//") ? requested : "/console";
+      const destination = requested?.startsWith("/") && !requested.startsWith("//") ? requested : "/dashboard/incident-analysis";
       // The session cookie is set by the response, so the console is reachable
       // from here. refresh() re-runs middleware, which would otherwise bounce
       // us straight back on a cached routing decision.

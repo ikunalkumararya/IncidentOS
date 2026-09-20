@@ -33,7 +33,7 @@ export default function SignUpPage() {
       // The account is created and signed in by the same response, so there
       // is no second trip through the sign-in form.
       await signUp(form.values.name, form.values.email, form.values.password);
-      router.replace("/console");
+      router.replace("/dashboard/incident-analysis");
       router.refresh();
     } catch (error) {
       const message =
