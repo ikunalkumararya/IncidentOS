@@ -1,7 +1,9 @@
 import { runInvestigation } from "./agent/investigator.js";
 import { API_KEY, FORCE_DEMO_MODE, INVESTIGATION_TIMEOUT_MS } from "./config.js";
+import { RunWriter } from "./db/store.js";
 import { EventStream } from "./events.js";
 import { loadFallback, replay, saveRecording } from "./recorder.js";
+import { ACTIVE_INCIDENT_ID } from "./incidents/index.js";
 
 export interface Run {
   id: string;
@@ -48,6 +50,13 @@ export function startInvestigation(): Run {
     abort: () => controller.abort(),
   };
 
+  // Recording is a side effect of the stream, not a step in the run: it
+  // subscribes like any other consumer, so nothing below has to know the
+  // database exists and a run behaves identically when it is down.
+  const writer = new RunWriter(id);
+  writer.begin(run.mode, ACTIVE_INCIDENT_ID);
+  stream.subscribe((event) => writer.record(event));
+
   run.finished = (async () => {
     let timer: NodeJS.Timeout | undefined;
 
@@ -82,7 +91,14 @@ export function startInvestigation(): Run {
       }
     } finally {
       clearTimeout(timer);
+      const elapsed = stream.elapsedMs;
       stream.close();
+
+      // A run that was aborted or crashed emits no terminal event, so without
+      // this it would stay 'running' in the database forever. Draining after
+      // it keeps `finished` an honest signal that everything is on disk.
+      writer.finalize(elapsed);
+      await writer.flush();
     }
   })();
 

@@ -1,6 +1,8 @@
 import cors from "cors";
 import express from "express";
 import { API_KEY, FORCE_DEMO_MODE, MODEL, PORT } from "./config.js";
+import { initPersistence, isPersistenceReady } from "./db/pool.js";
+import { listRuns, loadRunEvents } from "./db/store.js";
 import { loadIncident } from "./incidents/index.js";
 import { loadFallback } from "./recorder.js";
 import { getRun, startInvestigation } from "./runner.js";
@@ -18,7 +20,36 @@ app.get("/api/health", (_req, res) => {
     hasApiKey: Boolean(API_KEY),
     demoMode: FORCE_DEMO_MODE,
     hasRecording: Boolean(loadFallback()),
+    persistence: isPersistenceReady(),
   });
+});
+
+/** Past runs, newest first. Empty when persistence is unavailable. */
+app.get("/api/runs", async (req, res) => {
+  if (!isPersistenceReady()) {
+    res.json({ persistence: false, runs: [] });
+    return;
+  }
+  const limit = Number(req.query.limit ?? 20);
+  const runs = await listRuns(Number.isFinite(limit) ? limit : 20);
+  res.json({ persistence: true, runs });
+});
+
+/**
+ * The stored timeline for one run, in the same wire shape as the live stream
+ * so the dashboard can replay history through its existing reducer.
+ */
+app.get("/api/runs/:id/events", async (req, res) => {
+  if (!isPersistenceReady()) {
+    res.status(503).json({ error: "persistence is not available" });
+    return;
+  }
+  const events = await loadRunEvents(req.params.id);
+  if (!events.length) {
+    res.status(404).json({ error: "unknown run" });
+    return;
+  }
+  res.json({ runId: req.params.id, events });
 });
 
 app.get("/api/incident", (_req, res) => {
@@ -76,10 +107,18 @@ app.get("/api/investigations/:id/events", (req, res) => {
   res.on("close", close);
 });
 
+// Connect before listening so the first investigation is recorded rather than
+// racing the pool. A failure here is reported and then ignored: persistence is
+// an enhancement, and the demo has to survive a database that is not running.
+const persistence = await initPersistence();
+
 app.listen(PORT, () => {
   console.log(`IncidentOS server listening on http://localhost:${PORT}`);
   console.log(`  model      ${MODEL}`);
   console.log(`  api key    ${API_KEY ? "configured" : "MISSING — will fall back to the recorded run"}`);
   console.log(`  recording  ${loadFallback() ? "available" : "none yet"}`);
+  console.log(
+    `  database   ${persistence.ok ? persistence.detail : `unavailable — runs will not be saved (${persistence.detail})`}`,
+  );
   if (FORCE_DEMO_MODE) console.log("  DEMO_MODE  forced — the API will not be called");
 });
