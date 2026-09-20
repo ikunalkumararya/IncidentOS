@@ -263,7 +263,11 @@ export function useInvestigation() {
 
     let runId: string;
     try {
-      const response = await fetch(`${API_BASE}/api/investigations`, { method: "POST" });
+      const response = await fetch(`${API_BASE}/api/investigations`, {
+        method: "POST",
+        // Carries the session cookie; the endpoint is authenticated.
+        credentials: "include",
+      });
       if (!response.ok) throw new Error(`server responded ${response.status}`);
       runId = (await response.json()).runId;
     } catch (error) {
@@ -277,7 +281,11 @@ export function useInvestigation() {
       return;
     }
 
-    const source = new EventSource(`${API_BASE}/api/investigations/${runId}/events`);
+    // EventSource omits cookies cross-origin unless asked, and the stream is
+    // behind the same auth as everything else.
+    const source = new EventSource(`${API_BASE}/api/investigations/${runId}/events`, {
+      withCredentials: true,
+    });
     sourceRef.current = source;
 
     source.onmessage = (message) => {

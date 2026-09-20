@@ -1,8 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { IncidentChart } from "@/components/IncidentChart";
 import { ActivityFeed, Diff, Hypotheses, Panel, Report, Verification } from "@/components/panels";
+import { fetchMe, signOut, type AuthUser } from "@/lib/auth";
 import type { Incident, TimelineMarker, TimelinePoint } from "@/lib/types";
 import { API_BASE, useInvestigation } from "@/lib/useInvestigation";
 
@@ -16,7 +18,10 @@ const PHASES = [
 ] as const;
 
 export default function Page() {
+  const router = useRouter();
   const { state, start } = useInvestigation();
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [checkingSession, setCheckingSession] = useState(true);
   const [incident, setIncident] = useState<Incident | null>(null);
   const [timeline, setTimeline] = useState<{ points: TimelinePoint[]; markers: TimelineMarker[] }>({
     points: [],
@@ -24,17 +29,43 @@ export default function Page() {
   });
   const [offline, setOffline] = useState(false);
 
+  // Middleware only checks that a cookie exists. This is where the session is
+  // actually verified, so a forged or expired cookie lands on sign-in rather
+  // than on an empty console.
   useEffect(() => {
+    let cancelled = false;
+    fetchMe().then((me) => {
+      if (cancelled) return;
+      if (!me) {
+        router.replace("/signin?next=/console");
+        return;
+      }
+      setUser(me);
+      setCheckingSession(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [router]);
+
+  useEffect(() => {
+    if (checkingSession) return;
     Promise.all([
-      fetch(`${API_BASE}/api/incident`).then((r) => r.json()),
-      fetch(`${API_BASE}/api/timeline`).then((r) => r.json()),
+      fetch(`${API_BASE}/api/incident`, { credentials: "include" }).then((r) => r.json()),
+      fetch(`${API_BASE}/api/timeline`, { credentials: "include" }).then((r) => r.json()),
     ])
       .then(([i, t]) => {
         setIncident(i);
         setTimeline(t);
       })
       .catch(() => setOffline(true));
-  }, []);
+  }, [checkingSession]);
+
+  async function onSignOut() {
+    await signOut().catch(() => undefined);
+    router.replace("/signin");
+    router.refresh();
+  }
 
   const running = state.status === "running";
   const resolved = state.status === "resolved";
@@ -44,11 +75,24 @@ export default function Page() {
     return resolved || (order >= 0 && mine < order);
   };
 
+  if (checkingSession) {
+    return (
+      <div className="surface-dark">
+        <main className="mx-auto flex min-h-screen max-w-6xl items-center justify-center px-6">
+          <p className="text-sm text-[var(--color-ink-muted)]">Checking your session…</p>
+        </main>
+      </div>
+    );
+  }
+
   return (
+    <div className="surface-dark">
     <main className="mx-auto max-w-6xl px-6 py-7">
       <header className="mb-6 flex items-center justify-between">
         <div className="flex items-baseline gap-3">
-          <h1 className="text-lg font-semibold tracking-tight">IncidentOS</h1>
+          <a href="/" className="text-lg font-semibold tracking-tight transition hover:opacity-70">
+            IncidentOS
+          </a>
           <span className="text-xs text-[var(--color-ink-muted)]">Investigate. Fix. Verify.</span>
         </div>
         <div className="flex items-center gap-2 text-xs">
@@ -66,6 +110,17 @@ export default function Page() {
           <span className="uppercase tracking-wide text-[var(--color-ink-muted)]">
             {state.demoMode ? "Demo mode" : running ? "Live" : "Idle"}
           </span>
+
+          <span aria-hidden className="mx-1 h-3 w-px bg-[var(--color-ink-muted)] opacity-40" />
+
+          {user && <span className="text-[var(--color-ink-muted)]">{user.name}</span>}
+          <button
+            type="button"
+            onClick={onSignOut}
+            className="rounded border border-[var(--color-ink-muted)]/30 px-2 py-1 text-[11px] uppercase tracking-wide text-[var(--color-ink-muted)] transition hover:text-[var(--color-ink)]"
+          >
+            Sign out
+          </button>
         </div>
       </header>
 
@@ -290,6 +345,7 @@ export default function Page() {
         </div>
       )}
     </main>
+    </div>
   );
 }
 
