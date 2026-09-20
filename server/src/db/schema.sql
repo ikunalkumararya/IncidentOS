@@ -9,6 +9,21 @@
 -- generated, deterministic and self-checking — putting it in here would cost
 -- that reproducibility and buy nothing.
 
+-- Accounts. Passwords are stored only as bcrypt hashes; nothing in the
+-- codebase ever reads a plaintext password back, including the seed user.
+CREATE TABLE IF NOT EXISTS users (
+  id            TEXT PRIMARY KEY,
+  email         TEXT        NOT NULL UNIQUE,
+  name          TEXT        NOT NULL,
+  password_hash TEXT        NOT NULL,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- Email is compared case-insensitively, so the uniqueness constraint has to
+-- be too — otherwise Ada@x.com and ada@x.com are two accounts that both
+-- match at sign-in.
+CREATE UNIQUE INDEX IF NOT EXISTS users_email_lower_idx ON users (lower(email));
+
 CREATE TABLE IF NOT EXISTS runs (
   id            TEXT PRIMARY KEY,
   mode          TEXT        NOT NULL CHECK (mode IN ('live', 'demo')),
