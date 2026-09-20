@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import pg from "pg";
-import { DATABASE_URL, PERSISTENCE_ENABLED } from "../config.js";
+import { DATABASE_URL, DATABASE_CONNECT_TIMEOUT_MS, PERSISTENCE_ENABLED } from "../config.js";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 
@@ -37,9 +37,8 @@ export async function initPersistence(): Promise<{ ok: boolean; detail: string }
   try {
     pool = new pg.Pool({
       connectionString: DATABASE_URL,
-      // A demo should find out the database is missing immediately, not after
-      // the default 30s of a connection attempt nobody is watching.
-      connectionTimeoutMillis: 3_000,
+      // Keep TLS options from the connection string (including Neon SSL).
+      connectionTimeoutMillis: DATABASE_CONNECT_TIMEOUT_MS,
       max: 4,
     });
 
