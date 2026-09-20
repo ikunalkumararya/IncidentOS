@@ -8,7 +8,7 @@
     "dev": "concurrently -n server,web -c cyan,magenta \"pnpm --filter @incident-os/server dev\" \"pnpm --filter @incident-os/web dev\"",
     "dev:server": "pnpm --filter @incident-os/server dev",
     "dev:web": "pnpm --filter @incident-os/web dev",
-    "generate:demo-data": "tsx scripts/generate-demo-data.ts",
+    "generate:demo-data": "tsx scripts/generate-demo-data.ts && tsx scripts/generate-attack-data.ts",
     "investigate": "pnpm --filter @incident-os/server investigate",
     "typecheck": "tsc --noEmit -p server/tsconfig.json",
     "demo:promote": "tsx scripts/promote-recording.ts",

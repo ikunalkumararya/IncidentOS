@@ -1,0 +1,72 @@
+{
+  "service": "payments-api",
+  "description": "Source addresses attributed to the campaign, ranked by attempt volume.",
+  "sources": [
+    {
+      "ip": "185.220.101.47",
+      "asn": "AS43350",
+      "org": "NForce Entertainment",
+      "country": "NL",
+      "attempts": 1182,
+      "firstSeen": "2026-03-11T14:05:00Z",
+      "lastSeen": "2026-03-11T14:38:00Z",
+      "blockedAt": "2026-03-11T14:31:00Z",
+      "status": "blocked"
+    },
+    {
+      "ip": "45.133.216.18",
+      "asn": "AS204428",
+      "org": "SS-Net",
+      "country": "RO",
+      "attempts": 955,
+      "firstSeen": "2026-03-11T14:05:00Z",
+      "lastSeen": "2026-03-11T14:38:00Z",
+      "blockedAt": "2026-03-11T14:31:00Z",
+      "status": "blocked"
+    },
+    {
+      "ip": "103.251.167.92",
+      "asn": "AS135377",
+      "org": "UCLOUD HK",
+      "country": "HK",
+      "attempts": 819,
+      "firstSeen": "2026-03-11T14:14:00Z",
+      "lastSeen": "2026-03-11T14:38:00Z",
+      "blockedAt": "2026-03-11T14:31:00Z",
+      "status": "blocked"
+    },
+    {
+      "ip": "194.26.229.174",
+      "asn": "AS49505",
+      "org": "Selectel",
+      "country": "RU",
+      "attempts": 637,
+      "firstSeen": "2026-03-11T14:14:00Z",
+      "lastSeen": "2026-03-11T14:38:00Z",
+      "blockedAt": "2026-03-11T14:31:00Z",
+      "status": "blocked"
+    },
+    {
+      "ip": "141.98.11.203",
+      "asn": "AS209588",
+      "org": "Flyservers",
+      "country": "LT",
+      "attempts": 500,
+      "firstSeen": "2026-03-11T14:14:00Z",
+      "lastSeen": "2026-03-11T14:38:00Z",
+      "blockedAt": "2026-03-11T14:31:00Z",
+      "status": "blocked"
+    },
+    {
+      "ip": "89.248.165.31",
+      "asn": "AS202425",
+      "org": "IP Volume",
+      "country": "SC",
+      "attempts": 455,
+      "firstSeen": "2026-03-11T14:14:00Z",
+      "lastSeen": "2026-03-11T14:38:00Z",
+      "blockedAt": "2026-03-11T14:31:00Z",
+      "status": "blocked"
+    }
+  ]
+}
