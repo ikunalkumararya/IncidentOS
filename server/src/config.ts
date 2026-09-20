@@ -45,3 +45,29 @@ export const DATABASE_URL =
  * identically with the database down. Set to 0 to skip connecting entirely.
  */
 export const PERSISTENCE_ENABLED = process.env.PERSIST !== "0";
+
+/**
+ * Signing key for session tokens.
+ *
+ * The fallback exists so the demo runs out of the box, and is treated as
+ * untrusted: the server warns loudly at boot when it is in use, because a
+ * published default key means anyone can mint a valid session.
+ */
+export const JWT_SECRET = process.env.JWT_SECRET || "incidentos-insecure-development-secret";
+export const JWT_SECRET_IS_DEFAULT = !process.env.JWT_SECRET;
+
+/** Session lifetime. Short enough to be a demo, long enough to survive one. */
+export const SESSION_TTL_SECONDS = Number(process.env.SESSION_TTL_SECONDS ?? 60 * 60 * 12);
+
+export const SESSION_COOKIE = "incidentos_session";
+
+/** Origin allowed to send credentialed requests. */
+export const WEB_ORIGIN = process.env.WEB_ORIGIN || "http://localhost:3000";
+
+/**
+ * Seeded so the demo is usable the moment the database is up, without anyone
+ * having to register first.
+ */
+export const DEMO_USER_EMAIL = process.env.DEMO_USER_EMAIL || "demo@incidentos.dev";
+export const DEMO_USER_PASSWORD = process.env.DEMO_USER_PASSWORD || "incident123";
+export const DEMO_USER_NAME = process.env.DEMO_USER_NAME || "Demo Responder";
