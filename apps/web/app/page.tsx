@@ -314,7 +314,20 @@ export default function LandingPage() {
                   className="rounded-md bg-[var(--color-ink-dark)] px-6 py-3 text-[14px] font-medium text-[var(--color-canvas)] transition hover:opacity-85"
                 >
                   Get started
-                </Link>                <code className="rounded-md border border-[var(--color-rule-strong)] bg-[var(--color-card)] px-4 py-3 font-mono text-[13px] text-[var(--color-ink-dark-secondary)]">
+                </Link>
+                <Link
+                  href="/shop"
+                  className="rounded-md border border-[var(--color-rule-strong)] bg-[var(--color-card)] px-6 py-3 text-[14px] font-medium transition hover:bg-[var(--color-canvas-sunk)]"
+                >
+                  Try the demo shop
+                </Link>
+                <Link
+                  href="/report"
+                  className="rounded-md px-6 py-3 text-[14px] font-medium text-[var(--color-ink-dark-secondary)] underline-offset-2 transition hover:underline"
+                >
+                  Report an incident
+                </Link>
+                <code className="rounded-md border border-[var(--color-rule-strong)] bg-[var(--color-card)] px-4 py-3 font-mono text-[13px] text-[var(--color-ink-dark-secondary)]">
                   pnpm investigate
                 </code>
               </div>

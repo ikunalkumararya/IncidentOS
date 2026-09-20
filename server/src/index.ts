@@ -21,15 +21,20 @@ import { getRun, startInvestigation } from "./runner.js";
 import { buildAttackAnalysis } from "./security/index.js";
 import { buildTimeline } from "./timeline.js";
 
+import { incidentRouter, webhookRouter } from "./incidents/routes.js";
+import { startIncidentWorker } from "./incidents/worker.js";
+
 const app = express();
 
 // Credentialed requests need an explicit origin — a wildcard is rejected by
 // the browser once cookies are involved.
 app.use(cors({ origin: WEB_ORIGIN, credentials: true }));
+app.use("/api/webhooks", webhookRouter);
 app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
+app.use("/api/incidents", incidentRouter);
 
 app.get("/api/health", (_req, res) => {
   res.json({
@@ -138,6 +143,7 @@ app.get("/api/investigations/:id/events", requireAuth, (req, res) => {
 // racing the pool. A failure here is reported and then ignored: persistence is
 // an enhancement, and the demo has to survive a database that is not running.
 const persistence = await initPersistence();
+startIncidentWorker();
 
 // Accounts live in Postgres, so seeding can only happen once it is up. A
 // fresh database is otherwise unusable: every page behind sign-in would be

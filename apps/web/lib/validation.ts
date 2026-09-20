@@ -1,4 +1,4 @@
-/** Field-level validation shared by the sign-in and sign-up forms. */
+/** Field-level validation shared by the sign-in, sign-up and incident report forms. */
 
 export type Errors<T extends string> = Partial<Record<T, string>>;
 
@@ -52,4 +52,34 @@ export function scorePassword(value: string): PasswordStrength {
   if (value.length >= 14 && variety >= 3) score = 3;
 
   return { score, label: ["", "Fair", "Good", "Strong"][score] };
+}
+
+/*
+ * Incident report fields. These bounds mirror the ones the report proxy
+ * enforces in app/api/report/route.ts, which in turn mirror reportSchema on
+ * the API server. This copy exists to tell someone what is wrong before they
+ * submit — the server's copy is the one that decides.
+ */
+
+export function validateReportTitle(value: string): string | undefined {
+  const title = value.trim();
+  if (!title) return "Give the report a short title.";
+  if (title.length < 3) return "Use at least 3 characters.";
+  if (title.length > 200) return "Keep the title under 200 characters.";
+  return undefined;
+}
+
+export function validateService(value: string): string | undefined {
+  const service = value.trim();
+  if (!service) return "Name the service that is affected.";
+  if (service.length > 100) return "Keep the service name under 100 characters.";
+  return undefined;
+}
+
+export function validateDescription(value: string): string | undefined {
+  const description = value.trim();
+  if (!description) return "Describe what you saw.";
+  if (description.length < 10) return "Use at least 10 characters.";
+  if (description.length > 12000) return "Keep the description under 12,000 characters.";
+  return undefined;
 }

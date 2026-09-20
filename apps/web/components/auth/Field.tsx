@@ -21,6 +21,8 @@ export function Field({
   hint,
   revealable = false,
   autoFocus = false,
+  multiline = false,
+  rows = 6,
 }: {
   label: string;
   type?: "text" | "email" | "password";
@@ -33,12 +35,37 @@ export function Field({
   hint?: React.ReactNode;
   revealable?: boolean;
   autoFocus?: boolean;
+  multiline?: boolean;
+  rows?: number;
 }) {
   const id = useId();
   const errorId = `${id}-error`;
   const [revealed, setRevealed] = useState(false);
 
   const inputType = revealable && revealed ? "text" : type;
+
+  // Shared by the input and the textarea so the two cannot drift apart.
+  const control = {
+    id,
+    value,
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => onChange(e.target.value),
+    onBlur,
+    autoComplete,
+    placeholder,
+    autoFocus,
+    "aria-invalid": Boolean(error),
+    "aria-describedby": error ? errorId : undefined,
+    className:
+      "mt-1.5 w-full rounded-md border bg-[var(--color-card)] px-3 py-2.5 text-[14.5px] outline-none transition placeholder:text-[var(--color-ink-dark-muted)] focus:ring-2",
+    style: {
+      borderColor: error ? "var(--color-status-critical)" : "var(--color-rule-strong)",
+      // A custom property for the focus ring colour; the assertion below is
+      // what lets it sit in a CSSProperties object.
+      "--tw-ring-color": error
+        ? "color-mix(in srgb, var(--color-status-critical) 22%, transparent)"
+        : "color-mix(in srgb, var(--color-ink-dark) 14%, transparent)",
+    } as React.CSSProperties,
+  };
 
   return (
     <div>
@@ -57,26 +84,11 @@ export function Field({
         )}
       </div>
 
-      <input
-        id={id}
-        type={inputType}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onBlur={onBlur}
-        autoComplete={autoComplete}
-        placeholder={placeholder}
-        autoFocus={autoFocus}
-        aria-invalid={Boolean(error)}
-        aria-describedby={error ? errorId : undefined}
-        className="mt-1.5 w-full rounded-md border bg-[var(--color-card)] px-3 py-2.5 text-[14.5px] outline-none transition placeholder:text-[var(--color-ink-dark-muted)] focus:ring-2"
-        style={{
-          borderColor: error ? "var(--color-status-critical)" : "var(--color-rule-strong)",
-          // @ts-expect-error -- custom property for the focus ring colour
-          "--tw-ring-color": error
-            ? "color-mix(in srgb, var(--color-status-critical) 22%, transparent)"
-            : "color-mix(in srgb, var(--color-ink-dark) 14%, transparent)",
-        }}
-      />
+      {multiline ? (
+        <textarea {...control} rows={rows} className={`${control.className} resize-y`} />
+      ) : (
+        <input {...control} type={inputType} />
+      )}
 
       {/*
         The message slot is always in the layout, whether or not there is a

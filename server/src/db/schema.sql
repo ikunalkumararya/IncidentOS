@@ -114,3 +114,44 @@ CREATE TABLE IF NOT EXISTS reports (
   run_id   TEXT PRIMARY KEY REFERENCES runs(id) ON DELETE CASCADE,
   markdown TEXT NOT NULL
 );
+
+-- Real intake is separate from the deterministic demo fixtures.
+CREATE TABLE IF NOT EXISTS incoming_incidents (
+  id TEXT PRIMARY KEY,
+  source TEXT NOT NULL CHECK (source IN ('website', 'monitoring', 'manual')),
+  event_id TEXT NOT NULL,
+  title TEXT NOT NULL,
+  service TEXT NOT NULL,
+  severity TEXT NOT NULL,
+  description TEXT NOT NULL,
+  evidence JSONB NOT NULL DEFAULT '[]',
+  status TEXT NOT NULL DEFAULT 'queued' CHECK (status IN ('queued', 'investigating', 'review', 'failed')),
+  report TEXT,
+  error TEXT,
+  attempts INTEGER NOT NULL DEFAULT 0,
+  lease_token TEXT,
+  lease_until TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE(source, event_id)
+);
+CREATE INDEX IF NOT EXISTS incoming_incidents_queue_idx ON incoming_incidents(status, created_at);
+
+-- One row per step of an intake investigation, written as the worker goes.
+--
+-- The dashboard shows an investigation progressing phase by phase, and these
+-- are where those phases and their timings come from. They are recorded by the
+-- worker around the call it actually makes, so a duration on screen is a
+-- measured elapsed time rather than an animation. Cleared and rewritten when
+-- an investigation is retried.
+CREATE TABLE IF NOT EXISTS incident_phases (
+  incident_id TEXT        NOT NULL REFERENCES incoming_incidents(id) ON DELETE CASCADE,
+  seq         INTEGER     NOT NULL,
+  phase       TEXT        NOT NULL,
+  status      TEXT        NOT NULL CHECK (status IN ('running', 'done', 'failed')),
+  output      TEXT,
+  started_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+  finished_at TIMESTAMPTZ,
+  duration_ms INTEGER,
+  PRIMARY KEY (incident_id, seq)
+);
