@@ -16,3 +16,8 @@ recordings/run-*.json
 # Deployment secrets (examples remain tracked).
 deploy/*.env
 deploy/private/
+
+# Kilo files and directory
+.kilo/
+*.kilo
+
